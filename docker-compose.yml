@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  # The ai connector container
+  ai-fastapi:
+    build: ./core-service/ai-fastapi
+    container_name: we-create-ai
+    ports:
+      - "8000:8000" #Temporary for testing
+    volumes:
+      - ./core-service/ai-fastapi:/app
+    # This command allows 'Hot Reload' so you don't have to rebuild for every typo!
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
