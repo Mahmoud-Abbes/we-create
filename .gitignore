@@ -1,0 +1,49 @@
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+
+# --- Angular (Dashboard & Site-Engine) ---
+**/node_modules/
+**/.angular/
+**/dist/
+**/tmp/
+**/out-tsc/
+**/.pnp/
+**/.pnp.js
+.npm/
+
+# --- Spring Boot (Core-Service) ---
+**/target/
+**/*.jar
+**/*.war
+**/*.class
+**/.mvn/
+.metadata/
+.project
+.settings/
+.classpath
+.factorypath
+
+# --- FastAPI / Python (Core-Service) ---
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/.venv/
+**/venv/
+**/env/
+**/bin/
+**/Include/
+**/Lib/
+.python-version
+
+# --- IDEs ---
+**/.vscode/
+**/.idea/
+*.swp
+*.swo
+
+# --- Docker & Environment ---
+**/.env
+**/.env.local
+**/.env.*.local
+**/docker-volumes/
