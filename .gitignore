@@ -43,7 +43,8 @@ Thumbs.db
 *.swo
 
 # --- Docker & Environment ---
-**/.env
-**/.env.local
-**/.env.*.local
+.env
+.env.*
+!.env.example       # For future server auto pull (allow env pull )
+**/postgres_data/
 **/docker-volumes/
