@@ -11,6 +11,6 @@ def get_system_status():
     # Status and API_KEY availibility test
     return {
         "status": "online",
-        #"api_key_loaded": bool(os.getenv("AI_API_KEY"))    
-        "api_key_loaded": os.getenv("AI_API_KEY")    
+        "api_key_loaded": bool(os.getenv("AI_API_KEY"))    
+        #"api_key_loaded": os.getenv("AI_API_KEY")    
         }

@@ -48,6 +48,12 @@ async def generate_showcase_data(user_context: dict):
     # --- STEP 5: CLEAN THE AI TEXT (Markdown Removal) ---    
     # Remove whitespace from start/end
     clean_text = raw_ai_text.strip()
+
+    if clean_text.startswith("```"):
+        # Find the first newline and remove the prefix (e.g., ```json\n)
+        clean_text = clean_text.split("\n", 1)[-1]
+        # Remove the closing ```
+        clean_text = clean_text.rsplit("```", 1)[0].strip()
     
 
     # --- STEP 6: CONVERT STRING TO JSON OBJECT ---
