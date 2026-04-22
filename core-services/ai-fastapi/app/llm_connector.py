@@ -4,7 +4,7 @@ from google import genai
 from groq import Groq
 
 # Config
-GEMINI_MODEL = "gemini-1.5-flash"
+GEMINI_MODEL = "gemini-2.5-flash"
 GROQ_MODEL = "llama-3.3-70b-versatile"
 
 # Keys
