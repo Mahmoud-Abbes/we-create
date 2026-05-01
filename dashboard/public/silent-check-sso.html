@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <script>
+      /**
+       * RULE #4 (CSP) & RULE #3 (Clickjacking):
+       * Correlation: Uses postMessage with location.origin as a target.
+       * This ensures the session data is only sent to the verified parent application, 
+       * preventing data leakage if the app were embedded in a malicious iframe (Clickjacking).
+       */
+      parent.postMessage(location.href, location.origin);
+    </script>
+  </body>
+</html>

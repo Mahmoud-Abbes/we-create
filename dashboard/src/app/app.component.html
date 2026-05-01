@@ -1,0 +1,5 @@
+@if (isAuthReady$ | async) {
+  <router-outlet />
+} @else {
+  <div class="app-loading">Loading...</div>
+}
