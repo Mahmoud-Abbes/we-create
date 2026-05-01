@@ -1,4 +1,4 @@
-package com.wecreate.api.services.project;
+package com.wecreate.api.services.dashboard.project;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;

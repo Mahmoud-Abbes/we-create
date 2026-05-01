@@ -1,3 +1,18 @@
 spring:
   application:
     name: api-spring-boot
+  datasource:
+    url: jdbc:postgresql://db:5432/wecreate_db
+    username: wecreate
+    password: wecreate123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/we-create
+          jwk-set-uri: http://keycloak:8080/realms/we-create/protocol/openid-connect/certs

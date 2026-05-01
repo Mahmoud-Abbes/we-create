@@ -1,6 +1,6 @@
 package com.wecreate.api.controllers.testing;
 
-import com.wecreate.api.services.project.LlmTestService;
+import com.wecreate.api.services.dashboard.project.LlmTestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
