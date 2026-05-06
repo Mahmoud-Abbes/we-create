@@ -1,16 +1,18 @@
+@use 'theme' as *;
+
 .landing-wrapper {
-  background-color: #ffffff;
   min-height: 100vh;
   font-family: 'Google Sans', sans-serif;
+  @include themed() { background-color: t('bg-landing-wrapper'); }
 
   .hero-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #353535;
     padding: 2rem 0 3rem;
     width: 100%;
     min-height: 100vh;
+    @include themed() { background-color: t('bg-main'); }
   }
 }
 
@@ -24,29 +26,27 @@
   margin-bottom: 4rem;
   gap: 1rem;
 
-  .logo-group {
-    .main-logo {
-      height: 48px;
-      width: auto;
-      display: block;
-    }
+  .logo-group .main-logo {
+    height: 48px;
+    width: auto;
+    display: block;
   }
 
   .sign-in-outer {
-    background-color: #464646;
     padding: 10px 12px;
     border-radius: 10px;
     border: none;
     cursor: pointer;
+    @include themed() { background-color: t('bg-btn-outer'); }
 
     .sign-in-inner {
-      background-color: #323232;
       padding: 10px 22px;
       border-radius: 6px;
+      @include themed() { background-color: t('bg-btn-inner'); }
       
       span {
-        color: #dbdbdb;
         font-size: 1rem;
+        @include themed() { color: t('text-muted'); }
       }
     }
   }
@@ -62,30 +62,28 @@
   margin-bottom: 6rem;
 
   .hero-title {
-    color: #ffffff;
     font-size: clamp(2.5rem, 7vw, 4.5rem);
     font-weight: 500;
     width: 100%;
     max-width: 600px;
     margin-bottom: 2.5rem;
     line-height: 1.1;
+    @include themed() { color: t('text-main'); }
   }
 
   .btn-start {
-    background: linear-gradient(45deg, #3286fb, #a74544);
     padding: 12px 5.5rem;
     border-radius: 32px;
     border: none;
     cursor: pointer;
     margin-bottom: 3rem;
     transition: opacity 0.2s;
-
-    &:hover { opacity: 0.9; }
+    @include themed() { background: t('gradient-start'); }
 
     span {
-      color: #ffffff;
       font-size: clamp(1.25rem, 3vw, 2rem);
       font-weight: 400;
+      color: #ffffff; // Usually kept white regardless of theme for gradients
     }
   }
 
@@ -101,11 +99,15 @@
     }
 
     .scroll-text {
-      color: #ffffff;
       font-size: 1rem;
       opacity: 0.8;
+      @include themed() { color: t('text-main'); }
     }
   }
+}
+
+.hero-content .btn-start:hover {
+  opacity: 0.9;
 }
 
 .about-section {
@@ -125,15 +127,15 @@
     gap: 12px;
 
     .about-title {
-      color: #ffffff;
       font-size: 2.5rem;
       font-weight: 500;
+      @include themed() { color: t('text-main'); }
     }
 
     .about-description {
-      color: #ffffff;
-      font-size: 1.2rem; // Much more readable "About" text
+      font-size: 1.2rem;
       line-height: 1.5;
+      @include themed() { color: t('text-main'); }
     }
   }
 
@@ -151,80 +153,44 @@
 }
 
 @media (max-width: 900px) {
-  .landing-wrapper .hero-container {
-    padding-top: 1.5rem;
-  }
-
-  .navbar {
-    padding: 0 1.5rem;
-    margin-bottom: 3rem;
-  }
-
+  .landing-wrapper .hero-container { padding-top: 1.5rem; }
+  .navbar { padding: 0 1.5rem; margin-bottom: 3rem; }
   .about-section {
     flex-direction: column;
     text-align: center;
     gap: 2rem;
-
-    .about-image img {
-      max-width: 400px;
-    }
+    .about-image img { max-width: 400px; }
   }
 }
 
 @media (max-width: 640px) {
   .navbar {
     padding: 0 1rem;
-
-    .logo-group .main-logo {
-      height: 40px;
-    }
-
+    .logo-group .main-logo { height: 40px; }
     .sign-in-outer {
       padding: 8px 10px;
-
       .sign-in-inner {
         padding: 8px 16px;
-
-        span {
-          font-size: 0.95rem;
-        }
+        span { font-size: 0.95rem; }
       }
     }
   }
-
   .hero-content {
     padding: 0 1rem;
     margin-bottom: 4rem;
-
-    .btn-start {
-      width: min(100%, 320px);
-      padding: 12px 1.5rem;
-    }
+    .btn-start { width: min(100%, 320px); padding: 12px 1.5rem; }
   }
-
   .about-section {
     margin-bottom: 3rem;
     padding: 0 1rem;
-
     .about-text {
-      .about-title {
-        font-size: 2rem;
-      }
-
-      .about-description {
-        font-size: 1rem;
-      }
+      .about-title { font-size: 2rem; }
+      .about-description { font-size: 1rem; }
     }
   }
 }
 
 @media (max-width: 420px) {
-  .navbar {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .hero-content .hero-title {
-    margin-bottom: 2rem;
-  }
+  .navbar { flex-wrap: wrap; justify-content: center; }
+  .hero-content .hero-title { margin-bottom: 2rem; }
 }

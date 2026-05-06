@@ -1,0 +1,229 @@
+@use 'theme' as *;
+
+:host {
+  display: contents;
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 720px;
+  min-height: 100%;
+  padding: 30px 40px 20px 40px;
+}
+
+.step-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.step-title {
+  font-size: 25px;
+  font-weight: 700;
+  font-family: 'Google Sans', sans-serif;
+
+  @include themed() {
+    color: t('text-main');
+  }
+}
+
+.step-subtitle {
+  font-size: 16px;
+  font-family: 'Google Sans', sans-serif;
+  margin: 0;
+  margin-top: 5px;
+
+  @include themed() {
+    color: color-mix(in srgb, t('text-main'), transparent 45%);
+  }
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 28px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  margin-bottom: 9px;
+  font-family: 'Google Sans', sans-serif;
+
+  @include themed() {
+    color: color-mix(in srgb, t('text-main'), transparent 35%);
+  }
+}
+
+.info-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}
+
+.info-icon {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.tooltip {
+  position: absolute;
+  left: 26px;
+  top: 50%;
+  transform: translateY(calc(-50% + 4px));
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  border: 1px solid #444;
+  z-index: 10;
+}
+
+/* Color picker row — mirrors the upload-container card feel from Step 1 */
+.color-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 9px;
+  border: 1.2px solid rgb(84, 83, 83);
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+
+  @include themed() {
+    background-color: t('bg-btn-outer');
+  }
+
+  &:hover {
+    border-color: #777777;
+  }
+}
+
+.color-preview {
+  width: 52px;
+  height: 45px;
+  border-radius: 9px;
+  border: 1.2px solid rgb(84, 83, 83);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    border-color: #777777;
+  }
+}
+
+.color-hex {
+  flex: 1;
+  font-size: 16px;
+  font-family: 'Google Sans', monospace;
+  letter-spacing: 0.04em;
+
+  @include themed() {
+    color: color-mix(in srgb, t('text-main'), transparent 20%);
+  }
+}
+
+.add-btn {
+  flex-shrink: 0;
+  height: 45px;
+  padding: 0 22px;
+  border-radius: 9px;
+  font-size: 17px;
+  font-family: 'Google Sans', sans-serif;
+  border: 1px solid #9f9f9f52;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  background-color: #668cab;
+  color: #ffffff;
+
+  &:hover {
+    background-color: color-mix(in srgb, #668cab, white 12%);
+  }
+}
+
+.action-footer {
+  display: flex;
+  justify-content: center;
+  gap: 17px;
+  padding: 10px 0px 0px 0px;
+}
+
+.back-btn {
+  padding: 11px 42px;
+  border-radius: 9px;
+  font-size: 20px;
+  font-family: 'Google Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  @include themed() {
+    background-color: t('bg-btn-outer');
+    color: t('text-main');
+
+    &:hover {
+      background-color: t('bg-sidebar-hover');
+    }
+  }
+}
+
+.next-btn {
+  padding: 11px 44px;
+  border-radius: 9px;
+  font-size: 20px;
+  font-family: 'Google Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  @include themed() {
+    background-color: t('bg-cta');
+    color: t('text-cta');
+
+    &:hover {
+      background-color: color-mix(in srgb, t('bg-cta'), white 10%);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.placeholder {
+  font-style: italic;
+
+  @include themed() {
+    color: color-mix(in srgb, t('text-main'), transparent 60%);
+  }
+}

@@ -1,0 +1,17 @@
+<div class="step-content">
+  <h1 class="step-title">Choose your website type</h1>
+
+  <div class="selection-grid">
+    <button class="type-btn" [class.active]="selectedType === 'showcase'" (click)="onSelect('showcase')">
+      Showcase
+    </button>
+
+    <button class="type-btn" [class.active]="selectedType === 'ecommerce'" (click)="onSelect('ecommerce')">
+      E-commerce
+    </button>
+  </div>
+
+  <div class="action-footer">
+    <button class="next-btn" (click)="onNext()" [disabled]="!selectedType">Next</button>
+  </div>
+</div>

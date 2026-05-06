@@ -1,0 +1,174 @@
+<div class="step-content">
+  <div class="step-main">
+    <h2 class="step-title">Step 2: Reach & Socials</h2>
+
+    <div class="form-card">
+
+    <!-- Receiving Email -->
+    <div class="field-group">
+      <label class="field-label">
+        Receiving Email <span class="required">*</span>
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">The private email where you'll receive customer inquiries</span>
+        </span>
+      </label>
+      <input class="field-input" [class.error-border]="!errors.isReceivingEmailFilled || !errors.isReceivingEmailValid"
+        type="email" [(ngModel)]="brandPresenceData.brandContacts.receivingEmail"
+        placeholder="e.g. contact@yourcompany.com" (blur)="onReceivingEmailBlur()" (input)="onReceivingEmailInput()" />
+      <div class="error-message" *ngIf="!errors.isReceivingEmailFilled">This field is required.</div>
+      <div class="error-message" *ngIf="errors.isReceivingEmailFilled && !errors.isReceivingEmailValid">Please enter a
+        valid email address.</div>
+    </div>
+
+    <!-- Public Display Emails -->
+    <div class="field-group">
+      <label class="field-label">
+        Public Display Emails
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">Emails shown publicly on your website for customers to reach you</span>
+        </span>
+      </label>
+      <div class="add-row">
+        <input class="field-input" [class.error-border]="!errors.isDisplayEmailValid || errors.isDisplayEmailDuplicate"
+          type="email" [(ngModel)]="brandPresenceData.emailInput" placeholder="e.g. hello@yourcompany.com"
+          (keydown.enter)="addEmail()"
+          (input)="errors.isDisplayEmailValid = true; errors.isDisplayEmailDuplicate = false" />
+        <button class="add-btn" (click)="addEmail()">Add E-mail</button>
+      </div>
+      <div class="error-message" *ngIf="!errors.isDisplayEmailValid">Please enter a valid email address.</div>
+      <div class="error-message" *ngIf="errors.isDisplayEmailValid && errors.isDisplayEmailDuplicate">This email has
+        already been added.</div>
+      <div class="chips-row" *ngIf="brandPresenceData.brandContacts.publicEmails.length > 0">
+        <span class="chips-label">added emails:</span>
+        <div class="chips-list">
+          <div class="chip" *ngFor="let email of brandPresenceData.brandContacts.publicEmails; let i = index">
+            <span class="chip-name">{{ email }}</span>
+            <button class="chip-remove" (click)="removeEmail(i)">
+              <img src="images/cross.svg" class="remove-icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone Numbers -->
+    <div class="field-group">
+      <label class="field-label">
+        Phone Numbers
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">Phone numbers displayed on your website for customer contact</span>
+        </span>
+      </label>
+      <div class="add-row">
+        <input class="field-input" [class.error-border]="!errors.isPhoneValid || errors.isPhoneDuplicate" type="tel"
+          [(ngModel)]="brandPresenceData.phoneInput" placeholder="e.g. +216 12 345 678" (keydown.enter)="addPhone()"
+          (input)="errors.isPhoneValid = true; errors.isPhoneDuplicate = false" />
+        <button class="add-btn" (click)="addPhone()">Add Number</button>
+      </div>
+      <div class="error-message" *ngIf="!errors.isPhoneValid">Please enter a valid phone number (e.g. +216 12 345 678).
+      </div>
+      <div class="error-message" *ngIf="errors.isPhoneValid && errors.isPhoneDuplicate">This number has already been
+        added.</div>
+      <div class="chips-row" *ngIf="brandPresenceData.brandContacts.phoneNumbers.length > 0">
+        <span class="chips-label">added numbers:</span>
+        <div class="chips-list">
+          <div class="chip" *ngFor="let phone of brandPresenceData.brandContacts.phoneNumbers; let i = index">
+            <span class="chip-name">{{ phone }}</span>
+            <button class="chip-remove" (click)="removePhone(i)">
+              <img src="images/cross.svg" class="remove-icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Locations -->
+    <div class="field-group">
+      <label class="field-label">
+        Locations
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">Physical addresses and map links shown to your customers</span>
+        </span>
+      </label>
+      <div class="sub-label">Address</div>
+      <div class="add-row">
+        <input class="field-input" [class.error-border]="!errors.isLocationValid || errors.isLocationAddressDuplicate"
+          type="text" [(ngModel)]="brandPresenceData.locationAddressInput"
+          placeholder="e.g. Rue Menzel Cheker km 4.5, Sfax"
+          (input)="errors.isLocationValid = true; errors.isLocationAddressDuplicate = false" />
+        <button class="add-btn" (click)="addLocation()">Add Location</button>
+      </div>
+      <div class="error-message" *ngIf="!errors.isLocationValid">Please fill at least one of address or maps URL.</div>
+      <div class="error-message" *ngIf="errors.isLocationValid && errors.isLocationAddressDuplicate">This address has
+        already been added.</div>
+      <div class="sub-label" style="margin-top: 10px;">Maps URL</div>
+      <input class="field-input maps-url-input"
+        [class.error-border]="!errors.isLocationValid || !errors.isLocationMapsValid || errors.isLocationMapsDuplicate"
+        type="url" [(ngModel)]="brandPresenceData.locationMapsInput" placeholder="e.g. https://maps.google.com/..."
+        (input)="errors.isLocationValid = true; errors.isLocationMapsValid = true; errors.isLocationMapsDuplicate = false" />
+      <div class="error-message" *ngIf="!errors.isLocationValid">Please fill at least one of address or maps URL.</div>
+      <div class="error-message" *ngIf="errors.isLocationValid && !errors.isLocationMapsValid">Please enter a valid URL
+        starting with http:// or https://.</div>
+      <div class="error-message"
+        *ngIf="errors.isLocationValid && errors.isLocationMapsValid && errors.isLocationMapsDuplicate">This maps link
+        has already been added.</div>
+      <div class="chips-row" *ngIf="brandPresenceData.brandContacts.locations.length > 0">
+        <span class="chips-label">added locations:</span>
+        <div class="chips-list">
+          <div class="chip location-chip" *ngFor="let loc of brandPresenceData.brandContacts.locations; let i = index">
+            <div class="chip-inner">
+              <span class="chip-name" *ngIf="loc.address">{{ loc.address }}</span>
+              <span class="chip-url" *ngIf="loc.mapsUrl">{{ loc.mapsUrl }}</span>
+            </div>
+            <button class="chip-remove" (click)="removeLocation(i)">
+              <img src="images/cross.svg" class="remove-icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="field-group">
+      <label class="field-label">
+        Social Media Links
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">Links to your social media profiles (Instagram, Facebook, etc.)</span>
+        </span>
+      </label>
+      <div class="add-row">
+        <input class="field-input" [class.error-border]="!errors.isSocialValid || errors.isSocialDuplicate" type="url"
+          [(ngModel)]="brandPresenceData.socialInput" placeholder="e.g. https://instagram.com/yourpage"
+          (keydown.enter)="addSocial()" (input)="errors.isSocialValid = true; errors.isSocialDuplicate = false" />
+        <button class="add-btn" (click)="addSocial()">Add Link</button>
+      </div>
+      <div class="error-message" *ngIf="!errors.isSocialValid">Please enter a valid URL starting with http:// or
+        https://.</div>
+      <div class="error-message" *ngIf="errors.isSocialValid && errors.isSocialDuplicate">This link has already been
+        added.</div>
+      <div class="chips-row" *ngIf="brandPresenceData.socialsUrls.length > 0">
+        <span class="chips-label">added links:</span>
+        <div class="chips-list">
+          <div class="chip" *ngFor="let link of brandPresenceData.socialsUrls; let i = index">
+            <span class="chip-name">{{ link }}</span>
+            <button class="chip-remove" (click)="removeSocial(i)">
+              <img src="images/cross.svg" class="remove-icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+  <div class="action-footer">
+    <button class="back-btn" (click)="onBack()">Back</button>
+    <button class="next-btn" (click)="onNext()">Next</button>
+  </div>
+</div>

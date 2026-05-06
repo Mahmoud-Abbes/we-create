@@ -1,0 +1,63 @@
+$themes: (
+  dark: (
+    // Backgrounds
+    bg-main: #353535,
+    bg-landing-wrapper: #ffffff,
+    bg-btn-outer: #464646,
+    bg-btn-inner: #323232,
+    bg-cta: #004a77,
+    bg-cta-hover: #005f99,
+    bg-sidebar-hover: rgba(217, 217, 217, 0.05),
+    
+    // Typography
+    text-main: #ffffff,
+    text-muted: #dbdbdb,
+    text-cta: #c2e7ff,
+    
+    // Borders & Gradients
+    border-light: rgba(144, 144, 144, 0.33),
+    border-sidebar: #5f5f5f,
+    gradient-start: linear-gradient(45deg, #3286fb, #a74544)
+  ),
+  white: (
+    // Future self: Adjust these for the white theme
+    bg-main: #f4f5f7,
+    bg-landing-wrapper: #f4f5f7,
+    bg-btn-outer: #e0e0e0,
+    bg-btn-inner: #ffffff,
+    bg-cta: #007bff,
+    bg-cta-hover: #0056b3,
+    bg-sidebar-hover: rgba(0, 0, 0, 0.05),
+    
+    text-main: #1a1a1a,
+    text-muted: #666666,
+    text-cta: #ffffff,
+    
+    border-light: rgba(0, 0, 0, 0.1),
+    border-sidebar: #dddddd,
+    gradient-start: linear-gradient(45deg, #3286fb, #a74544)
+  )
+);
+
+// Internal map used during the loop
+$theme-map: null;
+
+@mixin themed() {
+
+  // 1. Set the default (Dark) directly
+  $theme-map: map-get($themes, dark) !global;
+  @content;
+  $theme-map: null !global;
+
+  @each $theme, $map in $themes {
+    :host-context(.theme-#{$theme}) & {
+      $theme-map: $map !global;
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function t($key) {
+  @return map-get($theme-map, $key);
+}

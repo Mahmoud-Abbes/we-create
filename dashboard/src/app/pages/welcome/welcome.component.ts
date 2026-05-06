@@ -1,19 +1,33 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { KeycloakService } from '../../auth/keycloak.service';
-import { SyncService } from '../../auth/sync.service';
+import { KeycloakService } from '../../services/auth/keycloak.service';
+import { SyncService } from '../../services/auth/sync.service';
+import { SidebarComponent } from '../../shared/ui/sidebar/sidebar.component';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
-  imports: [],
+  imports: [SidebarComponent, RouterLink],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.scss',
   standalone: true,
 })
 export class WelcomeComponent implements OnInit {
+  sidebarCollapsed = false;
+
+  constructor(private router: Router) { }
+
+  onSidebarCollapsedChange(collapsed: boolean): void {
+    this.sidebarCollapsed = collapsed;
+  }
+
+  navigateToNewProject(): void {
+    this.router.navigate(['/create']);
+  }
+
   private syncService = inject(SyncService);
+  private authService = inject(KeycloakService);
 
   // Temporary code
-  private authService = inject(KeycloakService);
   fullName = '';
   // End of Temporary code
 
@@ -22,11 +36,6 @@ export class WelcomeComponent implements OnInit {
     if (keycloakInstance?.authenticated) {
       this.syncService.syncUser().subscribe();
     }
-    
-    // Temporary code
-    const profile = (this.authService as any).keycloak?.tokenParsed;
-    this.fullName = `${profile?.name || ''} ${profile?.preferred_username || ''}` || 'Developer';
-    // End of Temporary code
   }
 
   // Temporary code
@@ -39,4 +48,8 @@ export class WelcomeComponent implements OnInit {
     this.authService.logout();
   }
   // End of Temporary code
+
+  onCreateProject() {
+    this.router.navigate(['/create']);
+  }
 }

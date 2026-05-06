@@ -1,0 +1,264 @@
+@use 'theme' as *;
+
+:host {
+  display: contents;
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 720px;
+  min-height: 100%;
+  padding: 30px 40px 20px 40px;
+}
+
+.step-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.step-title {
+  font-size: 25px;
+  font-weight: 700;
+  font-family: 'Google Sans', sans-serif;
+
+  @include themed() {
+    color: t('text-main');
+  }
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'Google Sans', sans-serif;
+  margin: 0 0 24px 0;
+
+  @include themed() {
+    color: color-mix(in srgb, t('text-main'), transparent 20%);
+  }
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 28px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  margin-bottom: 9px;
+  font-family: 'Google Sans', sans-serif;
+
+  @include themed() {
+    color: color-mix(in srgb, t('text-main'), transparent 35%);
+  }
+}
+
+.required {
+  color: #7b8fd4;
+}
+
+.field-hint {
+  font-size: 14px;
+  font-family: 'Google Sans', sans-serif;
+  margin-top: 5px;
+
+  @include themed() {
+    color: color-mix(in srgb, t('text-main'), transparent 50%);
+  }
+}
+
+.info-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}
+
+.info-icon {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.tooltip {
+  position: absolute;
+  left: 26px;
+  top: 50%;
+  transform: translateY(calc(-50% + 4px));
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  border: 1px solid #444;
+  z-index: 10;
+}
+
+/* Toggle */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.toggle-label {
+  font-size: 17px;
+  font-family: 'Google Sans', sans-serif;
+
+  @include themed() {
+    color: t('text-main');
+  }
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+
+  input:checked + .toggle-track {
+    background-color: #4a7fc1;
+  }
+
+  input:checked + .toggle-track .toggle-thumb {
+    transform: translateX(42px);
+  }
+}
+
+.toggle-track {
+  width: 73px;
+  height: 31px;
+  border-radius: 999px;
+  background-color: #555555;
+  transition: background-color 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.toggle-thumb {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+/* Textarea */
+.field-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 9px;
+  font-size: 16px;
+  font-family: 'Google Sans', sans-serif;
+  outline: none;
+  border: 1.2px solid rgb(84, 83, 83);
+  resize: vertical;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  line-height: 1.6;
+
+  @include themed() {
+    background-color: t('bg-btn-outer');
+    color: t('text-main');
+  }
+
+  &::placeholder {
+    color: #9a9a9a;
+  }
+
+  &:hover,
+  &:focus {
+    border-color: #777777;
+  }
+}
+
+.action-footer {
+  display: flex;
+  justify-content: center;
+  gap: 17px;
+  padding: 10px 0 0 0;
+}
+
+.back-btn {
+  padding: 11px 42px;
+  border-radius: 9px;
+  font-size: 20px;
+  font-family: 'Google Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  @include themed() {
+    background-color: t('bg-btn-outer');
+    color: t('text-main');
+
+    &:hover {
+      background-color: t('bg-sidebar-hover');
+    }
+  }
+}
+
+.next-btn {
+  padding: 11px 44px;
+  border-radius: 9px;
+  font-size: 20px;
+  font-family: 'Google Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  @include themed() {
+    background-color: t('bg-cta');
+    color: t('text-cta');
+
+    &:hover {
+      background-color: color-mix(in srgb, t('bg-cta'), white 10%);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.error-border {
+  border-color: #ff5252 !important;
+}
+
+.error-message {
+  color: #ff5252;
+  font-size: 13px;
+  margin-top: 6px;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 400;
+}

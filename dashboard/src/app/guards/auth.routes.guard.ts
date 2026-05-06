@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { SyncService } from '../auth/sync.service';
+import { SyncService } from '../services/auth/sync.service';
 
 export const authRoutesGuard: CanActivateFn = (route, state) => {
   const syncService = inject(SyncService);
@@ -9,7 +9,7 @@ export const authRoutesGuard: CanActivateFn = (route, state) => {
   if (syncService.isSynced) {
     return true;
   }
-  
+
   // Kick back to welcome to force the sync process
   return router.parseUrl('/welcome');
 };

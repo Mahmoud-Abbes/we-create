@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { KeycloakService } from '../../auth/keycloak.service';
+import { KeycloakService } from '../../services/auth/keycloak.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

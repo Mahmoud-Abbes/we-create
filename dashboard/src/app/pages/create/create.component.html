@@ -1,0 +1,70 @@
+<div class="create-page">
+  <app-sidebar
+    [collapsed]="sidebarCollapsed"
+    (collapsedChange)="onSidebarCollapsedChange($event)"
+  ></app-sidebar>
+
+  <main class="create-container">
+    <div
+      class="create-scroll-host"
+      [class.create-scroll-host--with-scrollbar]="showScrollbar"
+      #scrollHost
+      (scroll)="onScrollHost()"
+    >
+      <!-- Step 1: Website Type Selection -->
+      @if (currentStep === 1) {
+        <app-selection
+          class="create-step create-step-selection"
+          [selectedType]="selectedType"
+          (select)="selectType($event)"
+          (next)="nextStep()"
+        ></app-selection>
+      }
+
+      @if (currentStep > 1) {
+        @if (selectedType === 'showcase') {
+          @switch (currentStep) {
+            @case (2) {
+              <app-identity (next)="nextStep()" (back)="prevStep()"></app-identity>
+            }
+            @case (3) {
+              <app-reach (next)="nextStep()" (back)="prevStep()"></app-reach>
+            }
+            @case (4) {
+              <app-theme (next)="nextStep()" (back)="prevStep()"></app-theme>
+            }
+            @case (5) {
+              <app-partners (next)="nextStep()" (back)="prevStep()"></app-partners>
+            }
+            @case (6) {
+              <app-milestones (next)="nextStep()" (back)="prevStep()"></app-milestones>
+            }
+            @case (7) {
+              <app-services (next)="nextStep()" (back)="prevStep()"></app-services>
+            }
+            @case (8) {
+              <app-testimonials (next)="nextStep()" (back)="prevStep()"></app-testimonials>
+            }
+          }
+        } @else if (selectedType === 'ecommerce') {
+          <h1 class="step-title">Feature will be added soon</h1>
+        } @else {
+          {{ redirect() }}
+        }
+      }
+    </div>
+
+    @if (showScrollbar) {
+      <div class="custom-scrollbar">
+        <div class="custom-scrollbar__track" #scrollTrack (mousedown)="onTrackMouseDown($event)">
+          <div
+            class="custom-scrollbar__thumb"
+            [style.height.px]="thumbHeight"
+            [style.transform]="'translateY(' + thumbTop + 'px)'"
+            (mousedown)="onThumbMouseDown($event)"
+          ></div>
+        </div>
+      </div>
+    }
+  </main>
+</div>

@@ -1,0 +1,58 @@
+<div class="step-content">
+  <div class="step-main">
+    <h2 class="step-title">Step 4: Handling Sections</h2>
+
+    <div class="form-card">
+
+      <h3 class="section-title">1. Partners</h3>
+
+    <!-- Show Section Toggle -->
+    <div class="field-group">
+      <div class="toggle-row">
+        <span class="toggle-label">Show section</span>
+        <label class="toggle-switch">
+          <input type="checkbox" [(ngModel)]="partnersData.show" (change)="saveToService()" />
+          <span class="toggle-track">
+            <span class="toggle-thumb"></span>
+          </span>
+        </label>
+      </div>
+      <span class="field-hint">Choose to create partners section</span>
+    </div>
+
+    <!-- Partner Logos Upload -->
+    <div class="field-group" *ngIf="partnersData.show">
+      <label class="field-label">
+        Partner Company Logos <span class="required">*</span>
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">Logos of your partner companies displayed on your website</span>
+        </span>
+      </label>
+      <div class="upload-container" [class.error-border]="errors.isPartnerImagesEmpty" (click)="logosInput.click()">
+        <input #logosInput type="file" hidden multiple accept="image/*" (change)="onLogoFilesChange($event)" />
+        <span class="upload-placeholder" *ngIf="partnersData.partnerCompanyUrlImages.length === 0">
+          choose or drag images here
+        </span>
+        <div class="image-chips" *ngIf="partnersData.partnerCompanyUrlImages.length > 0">
+          <div class="image-chip" *ngFor="let name of partnersData.partnerCompanyUrlImages; let i = index">
+            <span class="chip-name">{{ name }}</span>
+            <button class="chip-remove" (click)="$event.stopPropagation(); removeLogo(i)">
+              <img src="images/cross.svg" class="remove-icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="error-message" *ngIf="errors.isPartnerImagesEmpty">
+        At least one partner logo is required when the section is shown.
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+  <div class="action-footer">
+    <button class="back-btn" (click)="onBack()">Back</button>
+    <button class="next-btn" (click)="onNext()">Next</button>
+  </div>
+</div>

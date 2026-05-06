@@ -1,0 +1,78 @@
+<div class="step-content">
+  <div class="step-main">
+    <h2 class="step-title">Step 3: Theme & Visuals</h2>
+
+    <p class="step-subtitle">Set the base for the AI's design generation.</p>
+    <p class="step-subtitle">If not set by user, AI will be extracting theme colors from logo.</p>
+
+    <div class="form-card">
+
+    <!-- Primary Color -->
+    <div class="field-group">
+      <label class="field-label">
+        Primary Color
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">The main brand color used across your website's UI</span>
+        </span>
+      </label>
+      <div class="color-picker-row">
+        <div class="color-preview" [style.background-color]="themeData.primaryColor || '#3b3b3b'"
+          (click)="primaryColorInput.click()"></div>
+        <input #primaryColorInput type="color" hidden [(ngModel)]="themeData.primaryColor" (input)="saveToService()" />
+        <span class="color-hex" [class.placeholder]="!themeData.primaryColor">
+          {{ themeData.primaryColor || 'not set — AI will decide' }}
+        </span>
+        <button class="add-btn" (click)="resetPrimary()">Reset</button>
+      </div>
+    </div>
+
+    <!-- Secondary Color -->
+    <div class="field-group">
+      <label class="field-label">
+        Secondary Color
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">An accent color used for highlights and secondary elements</span>
+        </span>
+      </label>
+      <div class="color-picker-row">
+        <div class="color-preview" [style.background-color]="themeData.secondaryColor || '#3b3b3b'"
+          (click)="secondaryColorInput.click()"></div>
+        <input #secondaryColorInput type="color" hidden [(ngModel)]="themeData.secondaryColor"
+          (input)="saveToService()" />
+        <span class="color-hex" [class.placeholder]="!themeData.secondaryColor">
+          {{ themeData.secondaryColor || 'not set — AI will decide' }}
+        </span>
+        <button class="add-btn" (click)="resetSecondary()">Reset</button>
+      </div>
+    </div>
+
+    <!-- Accent Color -->
+    <div class="field-group">
+      <label class="field-label">
+        Accent Color
+        <span class="info-wrap">
+          <img class="info-icon" src="images/details.svg" />
+          <span class="tooltip">The default text color used throughout your website</span>
+        </span>
+      </label>
+      <div class="color-picker-row">
+        <div class="color-preview" [style.background-color]="themeData.accentColor || '#3b3b3b'"
+          (click)="textColorInput.click()"></div>
+        <input #textColorInput type="color" hidden [(ngModel)]="themeData.accentColor" (input)="saveToService()" />
+        <span class="color-hex" [class.placeholder]="!themeData.accentColor">
+          {{ themeData.accentColor || 'not set — AI will decide' }}
+        </span>
+        <button class="add-btn" (click)="resetText()">Reset</button>
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+  <div class="action-footer">
+    <button class="back-btn" (click)="onBack()">Back</button>
+    <button class="next-btn" (click)="onNext()">Next</button>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="step-content">
+  <div class="step-main">
+    <h2 class="step-title">Step 4: Handling Sections</h2>
+
+    <div class="form-card">
+      <h3 class="section-title">3. Milestones</h3>
+
+      <!-- Show Section Toggle -->
+      <div class="field-group">
+        <div class="toggle-row">
+          <span class="toggle-label">Show section</span>
+          <label class="toggle-switch">
+            <input type="checkbox" [(ngModel)]="milestonesData.show" (change)="saveToService()" />
+            <span class="toggle-track">
+              <span class="toggle-thumb"></span>
+            </span>
+          </label>
+        </div>
+        <span class="field-hint">Choose to create milestones section</span>
+      </div>
+
+      <!-- Achievements Description -->
+      <div class="field-group" *ngIf="milestonesData.show">
+        <label class="field-label">
+          Achievements Description <span class="required">*</span>
+          <span class="info-wrap">
+            <img class="info-icon" src="images/details.svg" />
+            <span class="tooltip">Describe your key achievements and milestones to showcase on your website</span>
+          </span>
+        </label>
+        <textarea
+          class="field-textarea"
+          [class.error-border]="errors.isAchievementsDescriptionEmpty"
+          [(ngModel)]="milestonesData.achievementsDescription"
+          placeholder="e.g. We have reached over 100 clients and we have 98% client satisfaction..."
+          (input)="errors.isAchievementsDescriptionEmpty = false"
+          rows="6"
+        ></textarea>
+        <div class="error-message" *ngIf="errors.isAchievementsDescriptionEmpty">
+          Achievements description is required when the section is shown.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="action-footer">
+    <button class="back-btn" (click)="onBack()">Back</button>
+    <button class="next-btn" (click)="onNext()">Next</button>
+  </div>
+</div>

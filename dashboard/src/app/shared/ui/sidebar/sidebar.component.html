@@ -1,0 +1,52 @@
+<aside class="sidebar" [class.sidebar-collapsed]="collapsed">
+  <!-- Header: Burger Menu + Logo (Text removed since it's in the image) -->
+  <div class="sidebar-header" [class.sidebar-header-collapsed]="collapsed">
+    <button class="burger-menu-btn" (click)="toggleSidebar()">
+      <img src="/images/burger-menu.svg" class="icon-filter" alt="Menu" />
+    </button>
+    
+    <div class="sidebar-logo-group" *ngIf="!collapsed">
+      <img src="/images/logo.png" class="sidebar-logo-img" alt="We-Create Logo" />
+    </div>
+
+    <img *ngIf="collapsed" src="/images/logo-collapse.png" class="sidebar-logo-collapsed-img" alt="Logo" />
+  </div>
+
+  <ng-container *ngIf="!collapsed">
+    <button class="sidebar-new-app-btn" routerLink="/create">
+      <span>Start new app</span>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M9 1V17M1 9H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div class="sidebar-projects">
+      <span class="sidebar-projects-title">Your apps</span>
+      <ul class="sidebar-project-list">
+        <li class="sidebar-project-item">
+          <span class="sidebar-project-name">E-commerce</span>
+          <img src="/images/pin.svg" class="sidebar-project-icon icon-filter" alt="Pin" />
+        </li>
+        <li class="sidebar-project-item">
+          <span class="sidebar-project-name">Vitrine</span>
+          <img src="/images/pin.svg" class="sidebar-project-icon icon-filter" alt="Pin" />
+        </li>
+        <li class="sidebar-project-item">
+          <span class="sidebar-project-name">E-commerce</span>
+          <img src="/images/pin.svg" class="sidebar-project-icon icon-filter" alt="Pin" />
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+
+  <div class="sidebar-spacer"></div>
+
+  <!-- User Profile Section -->
+  <div class="sidebar-user" [class.sidebar-user-collapsed]="collapsed">
+    <div class="sidebar-user-info" *ngIf="!collapsed">
+      <span class="sidebar-user-name">Mahmoud abbes</span>
+      <span class="sidebar-user-handle">mahmoudab</span>
+    </div>
+    <img src="/images/settings.svg" class="sidebar-user-settings icon-filter" alt="Settings" />
+  </div>
+</aside>

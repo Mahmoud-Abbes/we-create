@@ -1,27 +1,29 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Dashboard</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 
+  <!-- 
     RULE #4 (CSP):
     - 'self': Only allow scripts from your own domain.
     - 'http://localhost:8081': Explicitly allow your Keycloak server.
     - 'unsafe-inline': Temporarily needed for some Angular styles (minimize this later).
   -->
-<meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
                script-src 'self' 'unsafe-inline' http://localhost:8081; 
                style-src 'self' 'unsafe-inline';
                img-src 'self' data:; 
                frame-src 'self' http://localhost:8081; 
                connect-src 'self' http://localhost:8081 http://localhost:8080;">
-               
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
+
 <body>
   <app-root></app-root>
 </body>
+
 </html>

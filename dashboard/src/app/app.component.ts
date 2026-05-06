@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { KeycloakService } from './auth/keycloak.service';
+import { KeycloakService } from './services/auth/keycloak.service';
 
 @Component({
   selector: 'app-root',
