@@ -1,10 +1,13 @@
 package com.wecreate.api.shared.dtos.llmconnector.showcase;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import java.util.Map;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ShowcaseResponse {
-    private String status;
-    private Map<String, Object> site_config;
+    private String creationStatus;
+    private String projectId;
 }
