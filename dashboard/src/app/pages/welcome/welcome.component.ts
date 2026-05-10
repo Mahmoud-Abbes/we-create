@@ -3,6 +3,7 @@ import { KeycloakService } from '../../services/auth/keycloak.service';
 import { SyncService } from '../../services/auth/sync.service';
 import { SidebarComponent } from '../../shared/ui/sidebar/sidebar.component';
 import { Router, RouterLink } from '@angular/router';
+import { CreateShowcaseService } from '../../services/projects/create.showcase.service';
 
 @Component({
   selector: 'app-welcome',
@@ -14,7 +15,7 @@ import { Router, RouterLink } from '@angular/router';
 export class WelcomeComponent implements OnInit {
   sidebarCollapsed = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private showcaseService: CreateShowcaseService) { }
 
   onSidebarCollapsedChange(collapsed: boolean): void {
     this.sidebarCollapsed = collapsed;
@@ -31,12 +32,21 @@ export class WelcomeComponent implements OnInit {
   fullName = '';
   // End of Temporary code
 
-  ngOnInit() {
-    const keycloakInstance = this.authService.keycloak;
-    if (keycloakInstance?.authenticated) {
-      this.syncService.syncUser().subscribe();
-    }
+ngOnInit() {
+  const keycloakInstance = this.authService.keycloak;
+
+  if (keycloakInstance?.authenticated) {
+    this.syncService.syncUser().subscribe(() => {
+      // Check the service state directly
+      const isCurrentlyCreating = this.showcaseService.isShowcaseCreating$.value;
+      
+      if (isCurrentlyCreating) {
+        console.log("Redirecting to /creating because a process is active.");
+        this.router.navigate(['/creating']);
+      }
+    });
   }
+}
 
   // Temporary code
   handleLogout() {

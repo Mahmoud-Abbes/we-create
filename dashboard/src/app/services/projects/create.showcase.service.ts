@@ -1,16 +1,69 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { CreateShowcaseConnectorService } from '../api/project/create.showcase.connector.service';
+import { ShowcaseResponse } from '../../core/interfaces/api/showcase-response.interface';
 
-// Using a Type Alias for cleaner code
 type UserAsset = { imageName: string; byteData: string };
 
 @Injectable({
   providedIn: 'root',
 })
 export class CreateShowcaseService {
-  // 1. Disassembled State Sections
 
-  // Step 1: Core Branding
+  public isShowcaseCreating$ = new BehaviorSubject<boolean>(
+    sessionStorage.getItem('isShowcaseCreating') === 'true'
+  );
+
+  public showcaseProjectResult$ = new BehaviorSubject<ShowcaseResponse | null>(
+    JSON.parse(sessionStorage.getItem('showcaseProjectResult') || 'null')
+  );
+
+  constructor(private connector: CreateShowcaseConnectorService) {
+    if (this.showcaseProjectResult$.value && this.isShowcaseCreating$.value) {
+      this.updateCreatingStatus(false);
+    }
+  }
+
+  private _isCallInProgress = false;
+
+  async startShowcaseCreation() {
+    if (this._isCallInProgress) return;
+
+    this._isCallInProgress = true;
+    this.updateCreatingStatus(true);
+
+    this.showcaseProjectResult$.next(null);
+    sessionStorage.removeItem('showcaseProjectResult');
+
+    try {
+      await this.convertAllAssetsToWebp();
+
+      console.log('userContext BEFORE send:', JSON.stringify(this.completeProject.userContext, null, 2));
+
+      const response = await this.connector.sendProjectToApi(this.completeProject);
+
+      console.log('userContext AFTER send:', JSON.stringify(this.completeProject.userContext, null, 2));
+
+      this.showcaseProjectResult$.next(response);
+      sessionStorage.setItem('showcaseProjectResult', JSON.stringify(response));
+    } catch (error) {
+      console.error('Showcase creation failed:', error);
+      const errorResult: ShowcaseResponse = { creationStatus: 'fail', projectId: null };
+      this.showcaseProjectResult$.next(errorResult);
+      sessionStorage.setItem('showcaseProjectResult', JSON.stringify(errorResult));
+    } finally {
+      this._isCallInProgress = false;
+      this.updateCreatingStatus(false);
+    }
+  }
+
+  private updateCreatingStatus(status: boolean) {
+    this.isShowcaseCreating$.next(status);
+    sessionStorage.setItem('isShowcaseCreating', status.toString());
+  }
+
+  // ── State Sections ──────────────────────────────────────
+
   private brandIdentity = new BehaviorSubject<any>({
     companyName: '',
     title: '',
@@ -19,7 +72,6 @@ export class CreateShowcaseService {
     companyImages: [],
   });
 
-  // Step 2: Contact & Socials
   private brandPresence = new BehaviorSubject<any>({
     brandContacts: {
       receivingEmail: '',
@@ -37,7 +89,7 @@ export class CreateShowcaseService {
   });
 
   private partners = new BehaviorSubject<any>({ show: true, partnerCompanyUrlImages: [] });
-  private about = new BehaviorSubject<any>({ show: true, title: '', brandStory: '' });
+  private about = new BehaviorSubject<any>({ show: false, title: '', brandStory: '' });
   private milestones = new BehaviorSubject<any>({ show: true, achievementsDescription: '' });
   private services = new BehaviorSubject<any>({
     show: true,
@@ -46,15 +98,8 @@ export class CreateShowcaseService {
     expertiseDescription: '',
   });
   private testimonials = new BehaviorSubject<any>({ show: true, items: [] });
-
   private userAssets = new BehaviorSubject<UserAsset[]>([]);
 
-  constructor() { }
-
-  /**
-   * Getter: The "Assembler"
-   * Combines all individual sections into the final JSON structure for the backend.
-   */
   get completeProject() {
     return {
       userContext: {
@@ -75,125 +120,120 @@ export class CreateShowcaseService {
     };
   }
 
-  // --- Identity Getters & Setters ---
-  setBrandIdentity(data: any) {
-    this.brandIdentity.next({ ...this.brandIdentity.value, ...data });
-  }
+  // ── Setters & Getters ───────────────────────────────────
 
-  getBrandIdentity() {
-    return this.brandIdentity.value;
-  }
+  setBrandIdentity(data: any) { this.brandIdentity.next({ ...this.brandIdentity.value, ...data }); }
+  getBrandIdentity() { return this.brandIdentity.value; }
 
-  setBrandPresence(data: any) {
-    this.brandPresence.next({ ...this.brandPresence.value, ...data });
-  }
+  setBrandPresence(data: any) { this.brandPresence.next({ ...this.brandPresence.value, ...data }); }
+  getBrandPresence() { return this.brandPresence.value; }
 
-  getBrandPresence() {
-    return this.brandPresence.value;
-  }
+  setTheme(data: any) { this.theme.next({ ...this.theme.value, ...data }); }
+  getTheme() { return this.theme.value; }
 
-  // --- Other Section Setters ---
-  setTheme(data: any) {
-    this.theme.next({ ...this.theme.value, ...data });
-  }
+  setAbout(data: any) { this.about.next({ ...this.about.value, ...data }); }
+  getAbout() { return this.about.value; }
 
-  getTheme() {
-    return this.theme.value;
-  }
+  setPartners(data: any) { this.partners.next({ ...this.partners.value, ...data }); }
+  getPartners() { return this.partners.value; }
 
-  setAbout(data: any) {
-    this.about.next({ ...this.about.value, ...data });
-  }
+  setMilestones(data: any) { this.milestones.next({ ...this.milestones.value, ...data }); }
+  getMilestones() { return this.milestones.value; }
 
-  getAbout() {
-    return this.about.value;
-  }
+  setServices(data: any) { this.services.next({ ...this.services.value, ...data }); }
+  getServices() { return this.services.value; }
 
-  setPartners(data: any) {
-    this.partners.next({ ...this.partners.value, ...data });
-  }
+  setTestimonials(data: any) { this.testimonials.next({ ...this.testimonials.value, ...data }); }
+  getTestimonials() { return this.testimonials.value; }
 
-  getPartners() {
-    return this.partners.value;
-  }
+  // ── Asset Management ────────────────────────────────────
 
-  setMilestones(data: any) {
-    this.milestones.next({ ...this.milestones.value, ...data });
-  }
-
-  getMilestones() {
-    return this.milestones.value;
-  }
-
-  setServices(data: any) {
-    this.services.next({ ...this.services.value, ...data });
-  }
-
-  getServices() {
-    return this.services.value;
-  }
-
-  setTestimonials(data: any) {
-    this.testimonials.next({ ...this.testimonials.value, ...data });
-  }
-
-  getTestimonials() {
-    return this.testimonials.value;
-  }
-  // --- Asset Management ---
   addAsset(asset: UserAsset) {
     const current = this.userAssets.value;
-
-    // Check if an asset with the same name is already present
     const exists = current.some((existing) => existing.imageName === asset.imageName);
-
     if (!exists) {
       this.userAssets.next([...current, asset]);
-      console.log(`Asset "${asset.imageName}" added successfully.`);
-    } else {
-      console.log(`Asset "${asset.imageName}" already exists in store.`);
     }
   }
 
   removeAsset(imageName: string) {
-    if (!imageName) return;
-
-    if (this.isAssetInUse(imageName)) {
-      console.log(`Asset "${imageName}" is still in use. Skipping physical removal.`);
-      return;
-    }
-
+    if (!imageName || this.isAssetInUse(imageName)) return;
     const current = this.userAssets.value;
-    const filtered = current.filter((asset) => asset.imageName !== imageName);
-    this.userAssets.next(filtered);
-    console.log(`Asset "${imageName}" removed from store.`);
+    this.userAssets.next(current.filter((asset) => asset.imageName !== imageName));
   }
 
   private isAssetInUse(imageName: string): boolean {
     if (!imageName) return false;
-
-    // Get the current assembled userContext
-    const context = this.completeProject.userContext;
-
-    /**
-     * Option A: Stringify Search (Quickest for simple name checks)
-     * We convert the object to a string and check for the "exact" image name value.
-     * We wrap it in quotes to ensure we aren't matching substrings of other data.
-     */
-    const contextString = JSON.stringify(context);
-
-    // We search for the filename as a JSON value (e.g., ": "my-image.png"")
+    const contextString = JSON.stringify(this.completeProject.userContext);
     return contextString.includes(`"${imageName}"`);
   }
 
-  getUserAssets() {
-    return this.userAssets.value;
+  getUserAssets() { return this.userAssets.value; }
+  getFullProject() { return this.completeProject; }
+
+  // ── WebP Conversion ─────────────────────────────────────
+
+  private async convertAllAssetsToWebp(): Promise<void> {
+    const current = this.userAssets.value;
+
+    const converted = await Promise.all(
+      current.map(async (asset) => {
+        if (asset.imageName.endsWith('.webp')) return asset;
+        const webpByteData = await this.convertBase64ToWebp(asset.byteData);
+        const webpName = asset.imageName.replace(/\.[^.]+$/, '') + '.webp';
+        return { imageName: webpName, byteData: webpByteData };
+      })
+    );
+
+    const renameMap = new Map<string, string>();
+    current.forEach((asset, i) => {
+      if (asset.imageName !== converted[i].imageName) {
+        renameMap.set(asset.imageName, converted[i].imageName);
+      }
+    });
+
+    this.userAssets.next(converted);
+
+    if (renameMap.size > 0) {
+      this.renameReferencesInContext(renameMap);
+    }
   }
 
-  /*
-    Temporary Method for testing
-  */
-  getFullProject() {
-    return this.completeProject;
+  private renameReferencesInContext(renameMap: Map<string, string>): void {
+    const renameInArray = (arr: string[]): string[] =>
+      arr.map((name) => renameMap.get(name) ?? name);
+
+    const id = { ...this.brandIdentity.value };
+    if (renameMap.has(id.faviconUrl)) id.faviconUrl = renameMap.get(id.faviconUrl)!;
+    id.companyImages = renameInArray(id.companyImages);
+    this.brandIdentity.next(id);
+
+    const pt = { ...this.partners.value };
+    pt.partnerCompanyUrlImages = renameInArray(pt.partnerCompanyUrlImages);
+    this.partners.next(pt);
+
+    const ts = { ...this.testimonials.value };
+    ts.items = ts.items.map((item: any) => ({
+      ...item,
+      imageUrl: renameMap.get(item.imageUrl) ?? item.imageUrl,
+    }));
+    this.testimonials.next(ts);
+  }
+
+  private convertBase64ToWebp(base64: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { reject(new Error('Canvas context unavailable')); return; }
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL('image/webp', 0.9));
+      };
+      img.onerror = reject;
+      img.src = base64;
+    });
   }
 }

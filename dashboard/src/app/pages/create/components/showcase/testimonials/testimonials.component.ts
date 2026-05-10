@@ -2,15 +2,16 @@ import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CreateShowcaseService } from '../../../../../services/projects/create.showcase.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-testimonials',
+  standalone: true, // Ensuring standalone is consistent with your setup
   imports: [CommonModule, FormsModule],
   templateUrl: './testimonials.component.html',
   styleUrl: './testimonials.component.scss',
 })
 export class TestimonialsComponent implements OnInit {
-  @Output() next = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
 
   testimonialsData: any;
@@ -20,10 +21,14 @@ export class TestimonialsComponent implements OnInit {
     isTestimonialsListEmpty: false,
   };
 
-  constructor(private showcaseService: CreateShowcaseService) {}
+  constructor(
+    private showcaseService: CreateShowcaseService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.testimonialsData = this.showcaseService.getTestimonials();
+    // Initialize input fields if they don't exist in the service state
     if (!this.testimonialsData.inputName) this.testimonialsData.inputName = '';
     if (!this.testimonialsData.inputPosition) this.testimonialsData.inputPosition = '';
     if (!this.testimonialsData.inputTestimonial) this.testimonialsData.inputTestimonial = '';
@@ -51,6 +56,7 @@ export class TestimonialsComponent implements OnInit {
       imageUrl: '',
     });
 
+    // Reset local inputs
     this.testimonialsData.inputName = '';
     this.testimonialsData.inputPosition = '';
     this.testimonialsData.inputTestimonial = '';
@@ -62,13 +68,18 @@ export class TestimonialsComponent implements OnInit {
     this.saveToService();
   }
 
-  onNext() {
+  /**
+   * Final validation and trigger for the creation process.
+   */
+  onFinish() {
+    // Validation logic for the Testimonials section
     if (this.testimonialsData.show) {
       if (this.testimonialsData.items.length === 0) {
         this.errors.isTestimonialsListEmpty = true;
         return;
       }
     } else {
+      // Clear data if section is disabled
       this.testimonialsData.items = [];
       this.testimonialsData.inputName = '';
       this.testimonialsData.inputPosition = '';
@@ -77,17 +88,26 @@ export class TestimonialsComponent implements OnInit {
       this.errors.isTestimonialsListEmpty = false;
     }
 
+    // Persist final step state to the service
     this.saveToService();
 
-    console.log('--- Assembler Output (WeCreate Testimonials) ---');
-    console.log(this.showcaseService.getFullProject());
-    console.log('-------------------------------------------');
-
-    this.next.emit();
+    // Trigger the background API call and navigate to the observer page
+    this.finishProject();
   }
 
   onBack() {
     this.saveToService();
     this.back.emit();
+  }
+
+  /**
+   * Triggers the service's creation flow and redirects immediately.
+   */
+  finishProject() {
+    // 1. Kick off the background process (no 'await' here)
+    this.showcaseService.startShowcaseCreation();
+
+    // 2. Immediately navigate to the loading/observer page
+    this.router.navigate(['/creating']);
   }
 }

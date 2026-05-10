@@ -1,0 +1,31 @@
+<div class="creating-page-container">
+  <!-- CASE 1: Still Creating (Loading State) -->
+  <div *ngIf="showcaseService.isShowcaseCreating$ | async" class="status-card loading-card">
+    <p class="status-text">Generation in progress...<br />Please wait</p>
+    <img src="images/loading.png" class="loading-icon" alt="loading" />
+  </div>
+
+  <!-- CASE 2: Process Finished -->
+  <div
+    *ngIf="
+      !(showcaseService.isShowcaseCreating$ | async) &&
+      (showcaseService.showcaseProjectResult$ | async) as result
+    "
+  >
+    <!-- Success UI -->
+    <div *ngIf="result.creationStatus === 'success'" class="status-card success-card">
+      <p class="status-text">Your website has been created</p>
+      <span class="percent-label">100%</span>
+      <button class="btn-view" (click)="viewProject(result.projectId)">
+        View website
+        <img src="images/open-icon.png" class="btn-icon" alt="open" />
+      </button>
+    </div>
+
+    <!-- Failure UI -->
+    <div *ngIf="result.creationStatus === 'fail'" class="status-card error-card">
+      <p class="status-text">Generation process failed</p>
+      <button class="btn-dashboard" (click)="clearAndGoHome()">Go back to dashboard</button>
+    </div>
+  </div>
+</div>

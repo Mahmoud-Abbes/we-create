@@ -82,7 +82,8 @@
 }
 
 :host-context(body) {
-  overflow: hidden; /* Ensure page scrollbar never appears */
+  overflow: hidden;
+  /* Ensure page scrollbar never appears */
 }
 
 .create-step {
