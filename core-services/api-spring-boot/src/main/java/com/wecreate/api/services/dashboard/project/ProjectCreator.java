@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.wecreate.api.services.dashboard.utils.project.LlmJsonGeneratorUtil;
+import com.google.gson.Gson;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -17,6 +20,8 @@ public class ProjectCreator {
 
     private final ProjectPersistenceUtil persistenceUtil;
     private final ProjectAssetUtil assetUtil;
+    private final LlmJsonGeneratorUtil llmGenerator;
+    private final Gson gson;
 
     /**
      * Orchestrates the flow with a manual rollback mechanism for external services.
@@ -42,8 +47,14 @@ public class ProjectCreator {
             // If this fails, it throws an exception handled by the catch block
             String refactoredJson = assetUtil.handleAssetsAndRefactorJson(request, currentProjectId);
 
+            // 3.5 LLM Generation: Enhance the refactored JSON
+            @SuppressWarnings("unchecked")
+            Map<String, Object> refactoredMap = gson.fromJson(refactoredJson, Map.class);
+            Map<String, Object> llmResult = llmGenerator.generateShowcase(refactoredMap);
+            String finalJson = gson.toJson(llmResult);
+
             // 4. Final Update
-            persistenceUtil.updateProjectContent(currentProjectId, refactoredJson);
+            persistenceUtil.updateProjectContent(currentProjectId, finalJson);
 
             ShowcaseResponse response = new ShowcaseResponse();
             response.setCreationStatus("success");

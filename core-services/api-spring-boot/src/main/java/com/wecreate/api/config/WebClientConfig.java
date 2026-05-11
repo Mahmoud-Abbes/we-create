@@ -19,7 +19,7 @@ public class WebClientConfig {
     @Bean
     public WebClient aiWebClient(WebClient.Builder builder) {
         return builder
-                .baseUrl("http://localhost:8000")
+                .baseUrl("http://we-create-ai:8000")
                 .build();
     }
 }
