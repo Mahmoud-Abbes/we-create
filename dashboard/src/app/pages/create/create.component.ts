@@ -10,6 +10,7 @@ import { PartnersComponent } from './components/showcase/partners/partners.compo
 import { MilestonesComponent } from './components/showcase/milestones/milestones.component';
 import { ServicesComponent } from './components/showcase/services/services.component';
 import { TestimonialsComponent } from './components/showcase/testimonials/testimonials.component';
+import { AboutComponent } from "./components/showcase/about/about.component";
 
 @Component({
   selector: 'app-create',
@@ -24,8 +25,9 @@ import { TestimonialsComponent } from './components/showcase/testimonials/testim
     PartnersComponent,
     MilestonesComponent,
     ServicesComponent,
-    TestimonialsComponent
-  ],
+    TestimonialsComponent,
+    AboutComponent
+],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss',
 })

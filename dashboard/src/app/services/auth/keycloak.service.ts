@@ -46,6 +46,8 @@ export class KeycloakService {
          * authorization code cannot be intercepted and used by an attacker (Session Hijacking).
          */
         pkceMethod: 'S256',
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
         /**
          * Some Keycloak setups block iframe-based cookie checks with CSP frame-ancestors.
          * Disable iframe/session polling so auth starts only when login() is triggered.

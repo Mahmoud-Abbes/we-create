@@ -1,0 +1,65 @@
+<div class="step-content">
+  <div class="step-main">
+    <h2 class="step-title">Step 4: Handling Sections</h2>
+
+    <div class="form-card">
+      <h3 class="section-title">2. About</h3>
+
+      <!-- Show Section Toggle -->
+      <div class="field-group">
+        <div class="toggle-row">
+          <span class="toggle-label">Show section</span>
+          <label class="toggle-switch">
+            <input type="checkbox" [(ngModel)]="aboutData.show" (change)="saveToService()" />
+            <span class="toggle-track">
+              <span class="toggle-thumb"></span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <ng-container *ngIf="aboutData.show">
+
+        <!-- Section Title -->
+        <div class="field-group">
+          <label class="field-label">Section title</label>
+          <input
+            class="field-input"
+            type="text"
+            [(ngModel)]="aboutData.title"
+            placeholder="e.g., Our Story"
+            (input)="saveToService()"
+          />
+        </div>
+
+        <!-- Brand Story -->
+        <div class="field-group">
+          <label class="field-label">
+            Brand story <span class="required">*</span>
+            <span class="info-wrap">
+              <img class="info-icon" src="images/details.svg" />
+              <span class="tooltip">Tell the story of your brand — who you are, what you do, and why it matters</span>
+            </span>
+          </label>
+          <textarea
+            class="field-textarea"
+            [class.error-border]="errors.isBrandStoryEmpty"
+            [(ngModel)]="aboutData.brandStory"
+            placeholder="e.g., We are a digital agency based in Sfax specializing in modular web design for startups..."
+            (input)="errors.isBrandStoryEmpty = false; saveToService()"
+            rows="6"
+          ></textarea>
+          <div class="error-message" *ngIf="errors.isBrandStoryEmpty">
+            Brand story is required when the section is shown.
+          </div>
+        </div>
+
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="action-footer">
+    <button class="back-btn" (click)="onBack()">Back</button>
+    <button class="next-btn" (click)="onNext()">Next</button>
+  </div>
+</div>

@@ -47,9 +47,10 @@ export class CreatingComponent implements OnInit {
     this.router.navigate(['/welcome']);
   }
 
-  viewProject(projectId: string): void {
-  sessionStorage.removeItem('isShowcaseCreating');
-  sessionStorage.removeItem('showcaseProjectResult');
-  this.router.navigate(['/view', projectId]);
-}
+  viewProject(projectId: string | null): void {
+    if (!projectId) return;
+    sessionStorage.removeItem('isShowcaseCreating');
+    sessionStorage.removeItem('showcaseProjectResult');
+    this.router.navigate(['/view', projectId]);
+  }
 }
