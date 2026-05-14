@@ -8,7 +8,7 @@ import { ShowcaseResponse } from '../../../core/interfaces/api/showcase-response
   providedIn: 'root'
 })
 export class CreateShowcaseConnectorService {
-  private readonly endpoint = `${environment.apiUrl}/api/project/finalize`;
+  private readonly endpoint = `${environment.apiUrl}/project/createShowcase`;
 
   constructor(private http: HttpClient) {}
 

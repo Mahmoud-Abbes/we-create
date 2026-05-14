@@ -1,4 +1,5 @@
 @use 'theme' as *;
+@use 'sass:color';
 
 $transition-speed: 0.3s;
 
@@ -20,9 +21,9 @@ $transition-speed: 0.3s;
   padding: 40px 24px;
   border-radius: 34px;
   margin: 34px auto 20px;
-  max-width: 950px;
-  width: calc(100% - 104px);
-  max-height: calc(100vh - 70px);
+  max-width: 900px;
+  width: 100%;
+  height: calc(100vh - 56px);
   transition: all $transition-speed ease;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -49,6 +50,12 @@ $transition-speed: 0.3s;
   @include themed() {
     border: 1px solid t('border-light');
   }
+
+  // Ensures centering when sidebar is absent
+  &.full-width {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .welcome-main-collapsed {
@@ -61,7 +68,7 @@ $transition-speed: 0.3s;
   flex-direction: column;
   align-items: center;
   gap: 66px;
-  max-width: 454px;
+  max-width: 645px; // Expanded to fit your error card width
   width: 100%;
   text-align: center;
 }
@@ -71,6 +78,7 @@ $transition-speed: 0.3s;
   font-weight: 400;
   line-height: 1.15;
   margin: 0;
+  margin-top: -50px;
   font-family: 'Google Sans', sans-serif;
 
   @include themed() {
@@ -88,59 +96,102 @@ $transition-speed: 0.3s;
   font-weight: 600;
   font-family: 'Google Sans', sans-serif;
   transition: background-color 0.2s ease, transform 0.15s ease;
+  margin-top: 30px;
   white-space: nowrap;
 
   @include themed() {
     background-color: t('bg-cta');
     color: t('text-cta');
   }
-}
 
-.welcome-cta:hover {
-  background-color: red;
-
-  @include themed() {
-    background-color: t('bg-cta-hover');
+  &:hover {
+    @include themed() {
+      background-color: t('bg-cta-hover');
+    }
   }
 }
 
-.welcome-cta:active {
-  transform: translateY(0);
+/* ── Status Handling ── */
+
+.loading-state {
+  .status-text {
+    font-size: 32px;
+    color: #ffffff;
+    opacity: 0.8;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
 }
+
+.status-card {
+  width: 100%; // Takes parent welcome-content max-width
+  min-height: 427px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  background: #2e2e2e;
+}
+
+.error-card {
+  border: 2px solid #f07070;
+}
+
+.status-text {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.btn-dashboard {
+  padding: 14px 36px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: #f07070;
+  color: #ffffff;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #e05555;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Responsive ── */
 
 @media (max-width: 768px) {
   .welcome-main {
     margin: 10px 10px 10px 0;
     padding: 32px 16px;
     border-radius: 20px;
-  }
-
-  .welcome-main-collapsed {
-    margin: 10px;
+    width: calc(100% - 20px);
   }
 
   .welcome-content {
     gap: 40px;
   }
 
-  .welcome-cta {
-    font-size: 17px;
-    padding: 12px 28px;
-    min-height: 46px;
-  }
-}
-
-@media (max-width: 480px) {
-  .welcome-main {
-    margin: 8px;
-    border-radius: 14px;
-  }
-
-  .welcome-main-collapsed {
-    margin: 8px;
-  }
-
-  .welcome-title {
-    font-size: 32px;
+  .status-card {
+    min-height: 350px;
   }
 }

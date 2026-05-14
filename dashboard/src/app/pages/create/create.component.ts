@@ -90,7 +90,7 @@ export class CreateComponent implements AfterViewInit, OnDestroy {
   }
 
   nextStep() {
-    const maxStep = this.selectedType === 'showcase' ? 8 : 2;
+    const maxStep = this.selectedType === 'showcase' ? 9 : 2;
     if (this.currentStep < maxStep) {
       this.currentStep++;
     }

@@ -8,7 +8,7 @@
   height: 100vh;
   position: sticky;
   top: 0;
-  transition: width 0.3s ease;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: 'Google Sans', sans-serif;
   overflow: hidden;
 
@@ -25,12 +25,14 @@
   align-items: center;
   padding: 24px 20px;
   gap: 16px;
-  transition: all 0.3s ease;
+  transition: padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              gap 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              flex-direction 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.sidebar-header-collapsed {
     flex-direction: column;
     padding: 24px 0;
-    gap: 12px;
+    gap: 24px;
 
     .burger-menu-btn {
       margin: 0 auto;
@@ -66,6 +68,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.2s ease,
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  overflow: hidden;
+
+  /* When sidebar is collapsing, fade out and slide up quickly */
+  .sidebar-collapsed & {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+  }
 }
 
 .sidebar-logo-img {
@@ -80,6 +95,16 @@
   height: auto;
   object-fit: contain;
   margin-top: 4px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease 0.15s,
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
+
+  /* Fade in after width transition is underway */
+  .sidebar-collapsed & {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .sidebar-new-app-btn {
@@ -93,10 +118,45 @@
   font-size: 15px;
   font-weight: 400;
   cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: background-color 0.2s,
+              margin 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   @include themed() {
     background-color: t('bg-btn-outer');
     color: color-mix(in srgb, t('text-main'), transparent 30%);
+  }
+
+  span {
+    opacity: 1;
+    transition: opacity 0.15s ease;
+    overflow: hidden;
+  }
+
+  svg {
+    flex-shrink: 0;
+    transition: margin 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.btn-collapsed {
+    justify-content: center;
+    padding: 12px;
+    margin: 16px auto 30px;
+    width: 50px;
+    border-radius: 50%;
+
+    span {
+      opacity: 0;
+      width: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    svg {
+      margin: 0;
+    }
   }
 }
 
@@ -111,6 +171,14 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  transition: padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease;
+
+  &.projects-collapsed {
+    padding: 0 10px;
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 .sidebar-projects-title {
@@ -119,6 +187,8 @@
   line-height: 1.1;
   margin-bottom: 4px;
   color: #f1f1f1;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .sidebar-project-list {
@@ -127,7 +197,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 .sidebar-project-item {
@@ -136,17 +206,36 @@
   justify-content: space-between;
   cursor: pointer;
   min-height: 28px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: background-color 0.18s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.07);
+
+    .sidebar-project-name {
+      color: #e0e0e0;
+    }
+  }
+
+  &.active-project {
+    background-color: rgba(255, 255, 255, 0.12);
+
+    .sidebar-project-name {
+      color: #ffffff;
+      font-weight: 500;
+    }
+  }
 
   .sidebar-project-name {
     font-size: 15px;
     font-weight: 400;
     line-height: 1;
     color: #b8b8b8;
-  }
-
-  .sidebar-project-icon {
-    height: 18px;
-    opacity: 0.68;
+    transition: color 0.18s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -165,18 +254,22 @@
 
   background-color: #343434;
   border: 1px solid #4a4a4a;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   .sidebar-user-name {
     font-size: 14px;
     font-weight: 500;
     color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .sidebar-user-handle {
     font-size: 12px;
     opacity: 0.5;
     color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .sidebar-user-settings {
@@ -186,6 +279,7 @@
     opacity: 0.6;
     cursor: pointer;
     border-radius: 50%;
+    flex-shrink: 0;
     transition: all 0.3s ease;
 
     &:hover {
@@ -209,10 +303,56 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  overflow: hidden;
+  opacity: 1;
+  max-width: 160px;
+  transition: opacity 0.15s ease,
+              max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              margin 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.info-collapsed {
+    opacity: 0;
+    max-width: 0;
+    margin: 0;
+    pointer-events: none;
+  }
 }
 
 .icon-filter {
   @include themed() {
     filter: brightness(0) invert(1);
   }
+}
+.sidebar-error-container {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-error-text {
+  color: #f07070;
+  font-size: 13px;
+  white-space: normal;
+}
+
+.sidebar-retry-btn {
+  background: transparent;
+  border: 1px solid #f07070;
+  color: #f07070;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  width: fit-content;
+  
+  &:hover {
+    background: #f07070;
+    color: white;
+  }
+}
+
+.full-width {
+  margin-left: 0 !important;
+  width: 100% !important;
 }

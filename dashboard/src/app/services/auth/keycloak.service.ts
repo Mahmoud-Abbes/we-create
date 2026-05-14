@@ -2,6 +2,7 @@ import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import type Keycloak from 'keycloak-js';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakService {
@@ -29,15 +30,13 @@ export class KeycloakService {
     const Keycloak = KeycloakModule.default;
 
     this.keycloak = new Keycloak({
-      url: 'http://localhost:8081',
+      url: environment.keycloakUrl, // Use the environment variable!
       realm: 'we-create',
       clientId: 'we-create-frontend',
     });
 
     try {
       await this.keycloak.init({
-
-        
         /**
          * RULE #2 (JWT & Auth Security):
          * Implementation of PKCE (Proof Key for Code Exchange) using S256.
@@ -56,8 +55,8 @@ export class KeycloakService {
       });
       this.isReady$.next(true);
     } catch (error) {
-        console.error('Keycloak initialization failed:', error);
-        this.isReady$.next(true); // Still set to true so the UI doesn't hang
+      console.error('Keycloak initialization failed:', error);
+      this.isReady$.next(true); // Still set to true so the UI doesn't hang
     }
   }
 
@@ -74,7 +73,6 @@ export class KeycloakService {
       redirectUri: `${window.location.origin}${redirectPath}`,
     });
   }
-
 
   /**
    * RULE #2 (Auth Security): Session Termination
@@ -97,5 +95,18 @@ export class KeycloakService {
    */
   getToken() {
     return this.keycloak?.token;
+  }
+
+  getUserFullName(): string {
+    const tokenParsed = this.keycloak?.tokenParsed as any;
+    if (!tokenParsed) return 'Unknown User';
+    const first = tokenParsed.given_name || '';
+    const last = tokenParsed.family_name || '';
+    return `${first} ${last}`.trim() || 'Anonymous User';
+  }
+
+  getUsername(): string {
+    const tokenParsed = this.keycloak?.tokenParsed as any;
+    return tokenParsed?.preferred_username || 'anonymous';
   }
 }

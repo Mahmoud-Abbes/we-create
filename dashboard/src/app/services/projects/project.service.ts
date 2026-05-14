@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
-export interface Project {
-  name: string;
-  isFavorite: boolean;
-  dateCreated: Date;
+export interface ProjectSidebarDTO {
+  slug: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
-  fetchProjects(): Observable<Project[]> {
-    return of([
-      { name: 'E-commerce', isFavorite: true, dateCreated: new Date('2024-01-15') },
-      { name: 'Vitrine', isFavorite: false, dateCreated: new Date('2024-03-02') },
-      { name: 'E-commerce', isFavorite: false, dateCreated: new Date('2024-05-20') },
-    ]);
+  private apiUrl = environment.apiUrl; 
+
+  constructor(private http: HttpClient) {}
+
+  getSidebarProjects(): Observable<ProjectSidebarDTO[]> {
+    return this.http.get<ProjectSidebarDTO[]>(`${this.apiUrl}/projects/sidebar`);
   }
 }

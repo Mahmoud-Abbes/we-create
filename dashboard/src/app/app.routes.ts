@@ -11,6 +11,6 @@ export const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
   { path: 'create', component: CreateComponent, canActivate: [authRoutesGuard] },
   { path: 'creating', component: CreatingComponent, canActivate: [authRoutesGuard] },
-  { path: 'view/:projectId', component: ViewComponent },
+  { path: 'view/:slug', component: ViewComponent },
   { path: '**', redirectTo: '' },
 ];

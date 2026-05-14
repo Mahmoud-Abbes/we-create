@@ -1,39 +1,53 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProjectService, Project } from '../../../services/projects/project.service';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ProjectService, ProjectSidebarDTO } from '../../../services/projects/project.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-
+import { KeycloakService } from '../../../services/auth/keycloak.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent implements OnInit {
-    @Input() collapsed = false;
+  @Input() collapsed = false;
   @Output() collapsedChange = new EventEmitter<boolean>();
- 
-  projects: Project[] = [];
- 
-  constructor(private projectService: ProjectService, private router: Router) {}
- 
+
+  projects: ProjectSidebarDTO[] = [];
+  loadFailed = false; // Internal flag for project loading
+
+  constructor(
+    private projectService: ProjectService,
+    public authService: KeycloakService,
+  ) {}
+
   ngOnInit(): void {
-    this.projectService.fetchProjects().subscribe((projects) => {
-      this.projects = projects;
+    this.loadProjects();
+  }
+
+  loadProjects() {
+    this.loadFailed = false;
+    this.projectService.getSidebarProjects().subscribe({
+      next: (data: ProjectSidebarDTO[]) => {
+        this.projects = data;
+        this.loadFailed = false;
+      },
+      error: (err: any) => {
+        console.error('Project load failed', err);
+        this.loadFailed = true;
+      }
     });
   }
- 
+
+  getFormattedUsername(): string {
+    const username = this.authService.getUsername() || '';
+    return username.length > 17 ? username.substring(0, 17) + '...' : username;
+  }
+
   toggleSidebar(): void {
     this.collapsed = !this.collapsed;
     this.collapsedChange.emit(this.collapsed);
   }
- 
-  navigateToNewProject(): void {
-    this.router.navigate(['/create']);
-  }
-
-
 }

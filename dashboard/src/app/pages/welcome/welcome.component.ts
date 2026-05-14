@@ -1,65 +1,64 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { KeycloakService } from '../../services/auth/keycloak.service';
 import { SyncService } from '../../services/auth/sync.service';
-import { SidebarComponent } from '../../shared/ui/sidebar/sidebar.component';
 import { Router, RouterLink } from '@angular/router';
 import { CreateShowcaseService } from '../../services/projects/create.showcase.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-welcome',
-  imports: [SidebarComponent, RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.scss',
   standalone: true,
 })
 export class WelcomeComponent implements OnInit {
-  sidebarCollapsed = false;
+  // Status tracking: 'loading' | 'auth_failed' | 'sync_failed' | 'ready'
+  status: 'loading' | 'auth_failed' | 'sync_failed' | 'ready' = 'loading';
 
-  constructor(private router: Router, private showcaseService: CreateShowcaseService) { }
-
-  onSidebarCollapsedChange(collapsed: boolean): void {
-    this.sidebarCollapsed = collapsed;
-  }
-
-  navigateToNewProject(): void {
-    this.router.navigate(['/create']);
-  }
-
+  private router = inject(Router);
+  private showcaseService = inject(CreateShowcaseService);
   private syncService = inject(SyncService);
-  private authService = inject(KeycloakService);
+  public authService = inject(KeycloakService);
 
-  // Temporary code
-  fullName = '';
-  // End of Temporary code
-
-ngOnInit() {
-  const keycloakInstance = this.authService.keycloak;
-
-  if (keycloakInstance?.authenticated) {
-    this.syncService.syncUser().subscribe(() => {
-      // Check the service state directly
-      const isCurrentlyCreating = this.showcaseService.isShowcaseCreating$.value;
-      
-      if (isCurrentlyCreating) {
-        console.log("Redirecting to /creating because a process is active.");
-        this.router.navigate(['/creating']);
+  ngOnInit() {
+    this.authService.isReady$.subscribe((ready) => {
+      if (ready) {
+        this.checkAccess();
       }
     });
   }
-}
 
-  // Temporary code
-  handleLogout() {
-    /**
-     * RULE #2 (Auth Security): Complete Session Termination
-     * We don't just clear the UI; we tell Keycloak to invalidate the
-     * SSO session so the user is truly logged out of the realm.
-     */
-    this.authService.logout();
+  checkAccess() {
+    if (!this.authService.isAuthenticated) {
+      this.status = 'auth_failed';
+      return;
+    }
+
+    this.status = 'loading';
+    this.syncService.syncUser().subscribe({
+      next: () => {
+        this.status = 'ready';
+        if (this.showcaseService.isShowcaseCreating$.value) {
+          this.router.navigate(['/creating']);
+        }
+      },
+      error: () => {
+        this.status = 'sync_failed';
+      }
+    });
   }
-  // End of Temporary code
 
-  onCreateProject() {
-    this.router.navigate(['/create']);
+  handleLogin() {
+    this.authService.login();
+  }
+
+  goHome() {
+    window.location.href = '/';
+  }
+
+  getFirstName(): string {
+    const token = this.authService.keycloak?.tokenParsed as any;
+    return token?.given_name || 'User';
   }
 }

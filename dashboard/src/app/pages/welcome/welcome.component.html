@@ -1,13 +1,30 @@
-<div class="welcome-page">
-  <app-sidebar
-    [collapsed]="sidebarCollapsed"
-    (collapsedChange)="onSidebarCollapsedChange($event)"
-  ></app-sidebar>
-  
-  <main class="welcome-main" [class.welcome-main-collapsed]="sidebarCollapsed">
+<div class="welcome-container">
+  <main class="welcome-main">
     <div class="welcome-content">
-      <h1 class="welcome-title">Welcome back<br />Mahmoud</h1>
-      <button class="welcome-cta" routerLink="/create">create new app +</button>
+      
+      <!-- 1. LOADING STATE -->
+      <div *ngIf="status === 'loading'" class="loading-state">
+        <p class="status-text">Loading...</p>
+      </div>
+
+      <!-- 2. AUTH FAILED STATE -->
+      <div *ngIf="status === 'auth_failed'" class="status-card error-card">
+        <p class="status-text">Authentication failed<br>Please try again</p>
+        <button class="btn-dashboard" (click)="handleLogin()">Log In</button>
+      </div>
+
+      <!-- 3. SYNC FAILED STATE -->
+      <div *ngIf="status === 'sync_failed'" class="status-card error-card">
+        <p class="status-text">Failed to sync user</p>
+        <button class="btn-dashboard" (click)="goHome()">Back to home</button>
+      </div>
+
+      <!-- 4. READY STATE -->
+      <div *ngIf="status === 'ready'">
+        <h1 class="welcome-title">Welcome back<br />{{ getFirstName() }}</h1>
+        <button class="welcome-cta" routerLink="/create">create new app +</button>
+      </div>
+
     </div>
   </main>
 </div>

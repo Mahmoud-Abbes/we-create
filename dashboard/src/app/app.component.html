@@ -1,5 +1,17 @@
 @if (isAuthReady$ | async) {
-  <router-outlet />
+  <div class="app-container">
+    <app-sidebar 
+      *ngIf="showSidebar" 
+      [collapsed]="sidebarCollapsed" 
+      (collapsedChange)="onSidebarCollapsedChange($event)">
+    </app-sidebar>
+    
+    <main class="app-main" 
+          [class.main-sidebar-collapsed]="sidebarCollapsed"
+          [class.main-no-sidebar]="!showSidebar">
+      <router-outlet />
+    </main>
+  </div>
 } @else {
   <div class="app-loading">Loading...</div>
 }
