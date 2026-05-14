@@ -36,7 +36,7 @@ public class ProjectCreator {
             String userId = jwt == null ? null : jwt.getSubject();
 
             // 2. Create DB Records (Get ID)
-            Project newProject = persistenceUtil.createEmptyProject(companyName);
+            Project newProject = persistenceUtil.createEmptyProject(companyName, projectType);
             currentProjectId = newProject.getId();
 
             if (userId != null && !userId.isBlank()) {

@@ -1,6 +1,10 @@
 spring:
   config:
     import: "optional:file:../../../.env[.properties]"
+server:
+  error:
+    include-message: always
+    include-exception: always
   application:
     name: api-spring-boot
   datasource:
@@ -15,8 +19,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/we-create
-          jwk-set-uri: http://keycloak:8080/realms/we-create/protocol/openid-connect/certs
+          issuer-uri: http://localhost/auth/realms/we-create
+          jwk-set-uri: http://keycloak:8080/auth/realms/we-create/protocol/openid-connect/certs
 
 # Custom Supabase Properties
 supabase:

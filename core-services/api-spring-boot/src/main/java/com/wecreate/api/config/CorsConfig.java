@@ -16,13 +16,16 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // RULE #5 (CORS Security): Explicitly allow your frontend origin
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+                "http://localhost:*",
+                "http://127.0.0.1:*"
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L); // Cache preflight for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply this configuration to all paths
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

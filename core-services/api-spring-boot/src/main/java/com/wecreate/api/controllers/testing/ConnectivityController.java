@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/test")
+@RequestMapping("/test")
 @RequiredArgsConstructor
 public class ConnectivityController {
 

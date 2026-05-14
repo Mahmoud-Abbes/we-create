@@ -17,10 +17,11 @@ public class ProjectPersistenceUtil {
     private final ProjectRepository projectRepository;
     private final UserProjectRepository userProjectRepository;
 
-    public Project createEmptyProject(String companyName) {
+    public Project createEmptyProject(String companyName, String projectType) {
         Project project = new Project();
         project.setSlug(this.generateUniqueSlug(companyName));
         project.setJsonContent("");
+        project.setProjectType(projectType);
         return projectRepository.save(project);
     }
 

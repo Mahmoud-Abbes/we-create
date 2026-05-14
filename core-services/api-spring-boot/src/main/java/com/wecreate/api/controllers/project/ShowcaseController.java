@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/project")
 @RequiredArgsConstructor
 public class ShowcaseController {
 
     private final ProjectCreator projectCreator;
 
-    @PostMapping("/finalize")
-    public ResponseEntity<ShowcaseResponse> finalizeProject(
+    @PostMapping("/createShowcase")
+    public ResponseEntity<ShowcaseResponse> createProject(
             @RequestBody ShowcaseRequest request,
             @AuthenticationPrincipal Jwt jwt
     ) {
@@ -27,7 +27,7 @@ public class ShowcaseController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required field: userContext");
         }
         System.out.println(
-                "Finalize project request received. userContext keys=" + request.getUserContext().keySet()
+                "Create project request received. userContext keys=" + request.getUserContext().keySet()
                         + ", userAssets=" + (request.getUserAssets() == null ? 0 : request.getUserAssets().size())
                         + ", userId=" + (jwt == null ? "anonymous" : jwt.getSubject())
         );

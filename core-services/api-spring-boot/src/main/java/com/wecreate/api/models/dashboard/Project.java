@@ -25,6 +25,8 @@ public class Project {
     @Column(columnDefinition = "TEXT")
     private String jsonContent = "";
 
+    private String projectType;
+
     @Column(nullable = false)
     private String subStatus = "TRIAL";
 
