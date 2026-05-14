@@ -1,0 +1,28 @@
+<div class="renderer-wrapper">
+      <!-- Error State: Displays the "Can't load content" message from backend -->
+      <div *ngIf="errorMessage" class="error-banner">
+        <h1>Project Unavailable</h1>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <!-- Success State -->
+      <div *ngIf="projectData">
+        <h1>Requested to create {{ currentSlug }} project</h1>
+        
+        <app-showcase 
+          *ngIf="projectData.projectType === 'showcase'" 
+          [content]="projectData.jsonContent">
+        </app-showcase>
+
+        <app-ecommerce 
+          *ngIf="projectData.projectType === 'ecommerce'" 
+          [content]="projectData.jsonContent">
+        </app-ecommerce>
+
+        <!-- Debug: Raw data from backend -->
+        <div style="margin-top: 24px; padding: 16px; background: #1a1a2e; border-radius: 8px; border: 1px solid #333;">
+          <p style="margin: 0 0 8px; color: #aaa; font-size: 12px;">Project Type: <strong style="color: #4fc3f7;">{{ projectData.projectType }}</strong></p>
+          <pre style="margin: 0; color: #ccc; font-size: 11px; white-space: pre-wrap; word-break: break-all; max-height: 400px; overflow-y: auto;">{{ projectData.jsonContent | json }}</pre>
+        </div>
+      </div>
+    </div>
