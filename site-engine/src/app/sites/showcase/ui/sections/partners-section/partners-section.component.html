@@ -1,0 +1,30 @@
+<div class="partners-band" 
+     *ngIf="content && content.show && content.companyUrlImages?.length > 0" 
+     [style.background-color]="content.appearance?.backgroundColor">
+  
+  <div class="scroll-container" #scrollContainer [class.center-content]="!shouldScroll">
+    <div class="scroll-track"
+         [class.animate]="shouldScroll"
+         [style.animation-duration]="shouldScroll ? (content.appearance?.scrollSpeed || '30s') : null">
+      
+      <div class="logo-group" #logoGroup>
+        <img *ngFor="let url of content.companyUrlImages" 
+             [src]="getDisplayLogoUrl(url)" 
+             alt="Partner Logo"
+             [style.height]="content.appearance?.logoHeight"
+             (load)="onLogoLoad()"
+             (error)="onLogoLoad()">
+      </div>
+
+      <div class="logo-group" *ngIf="shouldScroll">
+        <img *ngFor="let url of content.companyUrlImages" 
+             [src]="getDisplayLogoUrl(url)" 
+             alt="Partner Logo"
+             [style.height]="content.appearance?.logoHeight">
+      </div>
+
+    </div>
+  </div>
+
+  <div class="grain-texture" *ngIf="content.appearance?.grainy"></div>
+</div>

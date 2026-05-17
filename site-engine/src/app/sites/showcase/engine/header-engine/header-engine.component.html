@@ -1,0 +1,9 @@
+<ng-container *ngIf="headerData$ | async as header">
+  
+  <app-floating-island-header *ngIf="header.variant === 'floating-island'">
+  </app-floating-island-header>
+
+  <app-basic-header *ngIf="header.variant === 'basic'">
+  </app-basic-header>
+
+</ng-container>

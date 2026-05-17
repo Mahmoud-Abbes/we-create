@@ -1,0 +1,23 @@
+<div class="service-card"
+     *ngIf="appearance"
+     [style.background-color]="appearance.cardBg || appearance.cardBackgroundColor || 'white'"
+     [style.border-radius]="appearance.borderRadius || 'var(--borderRadius)'">
+  
+  <div class="icon-box" [style.color]="appearance.iconColor || appearance.accentColor || appearance.colors?.accentColor || 'var(--accent)'">
+    <svg 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      stroke-width="2.5" 
+      stroke-linecap="round" 
+      stroke-linejoin="round">
+      <path [attr.d]="svgIconData"></path>
+    </svg>
+  </div>
+
+  <div class="card-content">
+    <h3 class="card-title">{{ title }}</h3>
+    <p class="card-description">{{ description }}</p>
+  </div>
+
+</div>

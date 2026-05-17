@@ -1,0 +1,25 @@
+<main class="home-page-content" *ngIf="siteData$ | async as data">
+  <ng-container *ngIf="getSection(data, 'hero-bold') as hero">
+    <app-hero-bold [content]="hero"></app-hero-bold>
+  </ng-container>
+
+  <ng-container *ngIf="getSection(data, 'partners') as partners">
+    <app-partners-section *ngIf="partners.show" [content]="partners"></app-partners-section>
+  </ng-container>
+
+  <ng-container *ngIf="getSection(data, 'about') as about">
+    <app-about-section *ngIf="about.show" [content]="about"></app-about-section>
+  </ng-container>
+
+  <ng-container *ngIf="getSection(data, 'milestones') as milestones">
+    <app-milestones-section [content]="milestones"></app-milestones-section>
+  </ng-container>
+
+  <ng-container *ngIf="getSection(data, 'services') as services">
+    <app-services-section *ngIf="services.show" [content]="services"></app-services-section>
+  </ng-container>
+
+  <ng-container *ngIf="getSection(data, 'testimonials') as testimonials">
+    <app-testimonials-section *ngIf="testimonials.show" [content]="testimonials"></app-testimonials-section>
+  </ng-container>
+</main>

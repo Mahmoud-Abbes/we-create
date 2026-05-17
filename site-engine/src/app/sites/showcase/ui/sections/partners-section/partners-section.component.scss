@@ -1,0 +1,74 @@
+@use '../../../styles/variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.partners-band {
+  position: relative;
+  width: 100%;
+  padding: 2.5rem 0;
+  overflow: hidden;
+  border-top: 1px solid rgba($text, 0.04);
+  border-bottom: 1px solid rgba($text, 0.04);
+
+  .scroll-container {
+    display: flex;
+    width: 100%;
+
+    &.center-content {
+      justify-content: center;
+
+      .logo-group {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .scroll-track {
+    display: flex;
+    width: max-content;
+
+    &.animate {
+      animation: scroll linear infinite;
+    }
+
+    &.animate:hover {
+      animation-play-state: paused;
+    }
+  }
+
+  .logo-group {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+    padding-right: 5rem;
+
+    img {
+      width: auto;
+      filter: grayscale(100%);
+      opacity: 0.4; // Subtle grayscaling
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+  }
+
+  .grain-texture {
+    position: absolute;
+    inset: 0;
+    opacity: 0.42;
+    pointer-events: none;
+    z-index: 2;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 160px 160px;
+    mix-blend-mode: overlay;
+    filter: contrast(185%) brightness(108%);
+  }
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

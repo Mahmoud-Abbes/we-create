@@ -1,0 +1,15 @@
+<header class="basic-nav-bar" [ngStyle]="getHeaderStyle(data)" *ngIf="siteData$ | async as data">
+  <div class="header-container">
+
+    <div class="brand-side">
+      <img *ngIf="data.identity?.faviconUrl" [src]="data.identity.faviconUrl" alt="logo" class="favicon-img">
+      <span class="company-name">{{ data.identity?.companyName }}</span>
+    </div>
+
+    <div class="nav-links">
+      <a routerLink="./" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a routerLink="./contact" routerLinkActive="active-link">Contact</a>
+    </div>
+
+  </div>
+</header>

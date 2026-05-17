@@ -1,0 +1,322 @@
+@import '../../../styles/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.split-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+
+  &.with-basic-header {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  &.with-floating-header {
+    padding-top: 8rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+.split-contact-shell {
+  width: 100%;
+  max-width: $container;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 3rem;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    padding: 3rem 2rem 4rem;
+  }
+}
+
+.split-container {
+  display: grid;
+  width: 100%;
+  background: #fff;
+  column-gap: 2.5rem;
+  row-gap: 1rem;
+  align-items: start;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: 4rem;
+    row-gap: 1rem;
+  }
+}
+
+/* Row 1: titles share a baseline on two columns (desktop) */
+.side-title {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: $font-heading;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: $text;
+
+  @media (min-width: 768px) {
+    align-self: baseline;
+  }
+}
+
+.form-title {
+  grid-column: 1;
+  grid-row: 3;
+  font-family: $font-heading;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+  color: $text;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+
+  @media (min-width: 768px) {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: baseline;
+  }
+}
+
+.info-panel {
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+  color: $text;
+
+  @media (min-width: 768px) {
+    grid-row: 2;
+  }
+
+  .info-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .side-desc {
+    font-family: $font-body;
+    margin: 0 0 1.75rem;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba($text, 0.52);
+    max-width: 36ch;
+  }
+
+  .contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .method-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    max-width: 100%;
+  }
+
+  .method-icon {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text;
+    line-height: 0;
+    font-size: 0.82rem;
+    min-height: calc(1em * 1.45);
+    align-self: flex-start;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+  }
+
+  .text-wrap {
+    min-width: 0;
+    font-family: $font-body;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .method-text {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: rgba($text, 0.78);
+
+    &.link {
+      color: $text;
+      text-decoration: none;
+      word-break: break-word;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .maps-link {
+    font-size: 0.85rem;
+    color: $text;
+    opacity: 0.45;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.3s;
+    align-self: flex-start;
+    margin-top: 0.35rem;
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    .arrow-icon {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+    }
+  }
+
+  .social-block {
+    align-self: flex-start;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 0.65rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid rgba($text, 0.08);
+    box-sizing: border-box;
+  }
+
+  .social-container {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  /* Tight rectangular frame: no circle, no inner padding — box matches icon + border */
+  .social-link {
+    display: inline-flex;
+    align-items: start;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    color: $text;
+    line-height: 0;
+    text-decoration: none;
+    flex-shrink: 0;
+    box-sizing: border-box;
+
+    svg {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+
+    &:hover {
+      border-color: rgba($text, 0.35);
+      background: rgba($text, 0.04);
+    }
+  }
+}
+
+.form-panel {
+  grid-column: 1;
+  grid-row: 4;
+  min-width: 0;
+
+  @media (min-width: 768px) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    font-family: $font-body;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: $text;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #e2e2e2;
+      border-radius: 0;
+      padding: 0.65rem 0.75rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: $text;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s ease;
+
+      &:focus {
+        border-color: rgba($text, 0.35);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 9rem;
+      line-height: 1.5;
+    }
+  }
+
+  .send-btn {
+    align-self: flex-start;
+    margin-top: 0.35rem;
+    padding: 0.7rem 1.75rem;
+    border: none;
+    border-radius: 0;
+    background: $primary;
+    color: #fff;
+    font-family: $font-body;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s ease, opacity 0.15s ease;
+
+    &:hover {
+      filter: brightness(0.95);
+    }
+
+    &:active {
+      opacity: 0.9;
+    }
+  }
+}

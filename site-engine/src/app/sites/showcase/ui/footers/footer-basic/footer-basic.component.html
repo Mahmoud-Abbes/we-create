@@ -1,0 +1,91 @@
+<footer class="footer-basic" *ngIf="data" [style.background-color]="data.footer?.specialColor">
+  <div class="container">
+    <div class="footer-head">
+      <h2 class="brand-name" *ngIf="data.identity?.companyName">{{ data.identity.companyName }}</h2>
+      <div class="social-circles" *ngIf="data.identity?.socials && validSocials(data.identity.socials).length">
+        <a
+          *ngFor="let social of validSocials(data.identity.socials)"
+          [href]="social.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="circle-link"
+          [style.background-color]="contactIconsBackground()"
+          [attr.aria-label]="social.platform || 'Social link'"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path [attr.d]="social.platformSvg" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-body">
+      <div class="contact-flex-row" *ngIf="data.identity?.brandContacts">
+        
+        <div class="contact-block locations" *ngIf="data.identity.brandContacts.locations?.length">
+          <div class="contact-row" *ngFor="let loc of data.identity.brandContacts.locations">
+            <span
+              class="contact-icon"
+              *ngIf="data.identity.brandContacts.icons?.addressSvg"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path [attr.d]="data.identity.brandContacts.icons.addressSvg" />
+              </svg>
+            </span>
+            <div class="contact-body">
+              <span class="text">{{ loc.address }}</span>
+              <a
+                *ngIf="hasMapsUrl(loc)"
+                [href]="loc.mapsUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="maps-link"
+              >
+                Link to maps
+                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-block phones" *ngIf="data.identity.brandContacts.phoneNumbers?.length">
+          <div class="contact-row" *ngFor="let phone of data.identity.brandContacts.phoneNumbers">
+            <span
+              class="contact-icon"
+              *ngIf="data.identity.brandContacts.icons?.phoneSvg"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path [attr.d]="data.identity.brandContacts.icons.phoneSvg" />
+              </svg>
+            </span>
+            <div class="contact-body">
+              <span class="phone-item">{{ phone }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-block emails" *ngIf="data.identity.brandContacts.publicEmails?.length">
+          <div class="contact-row" *ngFor="let email of data.identity.brandContacts.publicEmails">
+            <span
+              class="contact-icon"
+              *ngIf="data.identity.brandContacts.icons?.emailSvg"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path [attr.d]="data.identity.brandContacts.icons.emailSvg" />
+              </svg>
+            </span>
+            <div class="contact-body">
+              <span class="email-item">{{ email }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</footer>

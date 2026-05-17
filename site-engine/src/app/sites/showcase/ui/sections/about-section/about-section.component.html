@@ -1,0 +1,36 @@
+<section class="about-section" 
+         [ngClass]="resolveLayoutClasses()" 
+         *ngIf="content">
+  
+  <div class="background-gradient-layer" [style.background]="resolveBackground()">
+    <div class="grain-texture" 
+         *ngIf="content.appearance?.grainy && content.appearance?.colors?.color2">
+    </div>
+  </div>
+
+  <div class="bg-carousel-layer" *ngIf="content.layoutType === 'images-background' && content.images?.length > 0">
+    <div *ngFor="let img of content.images; let i = index" 
+         class="bg-slide" 
+         [class.active]="i === currentSlide"
+         [style.backgroundImage]="'url(' + img + ')'">
+    </div>
+  </div>
+
+  <div class="container about-grid">
+    <div class="content-side" *ngIf="content.content">
+      <h2 class="title">{{ content.content.title }}</h2>
+      <span class="subtitle" *ngIf="content.content.subtitle">{{ content.content.subtitle }}</span>
+      <p class="description">{{ content.content.description }}</p>
+    </div>
+
+    <div class="image-side" *ngIf="content.layoutType !== 'images-background' && content.images?.length > 0">
+      <div class="image-viewport">
+        <div class="image-track"
+             [class.no-transition]="disableSlideTransition"
+             [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
+          <img *ngFor="let img of getCarouselImages(content.images)" [src]="img" alt="About Image">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

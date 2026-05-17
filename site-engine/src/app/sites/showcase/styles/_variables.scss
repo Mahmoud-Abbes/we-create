@@ -1,0 +1,12 @@
+/* Fallbacks */
+$primary:    var(--primary, #0A2463);
+$secondary:  var(--secondary, #3E92CC);
+$accent:     var(--accent, #3E92CC); // Using secondary as default fallback
+$surface:    var(--surface, #F8FAFC);
+$text:       var(--text, #1A202C);
+$radius:     var(--borderRadius, 16px);
+$container:  var(--containerWidth, 1200px);
+
+/* Fonts */
+$font-heading: var(--headingFont, sans-serif);
+$font-body:    var(--bodyFont, sans-serif);

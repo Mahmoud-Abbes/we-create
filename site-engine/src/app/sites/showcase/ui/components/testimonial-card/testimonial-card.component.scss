@@ -1,0 +1,53 @@
+@use '../../../styles/variables' as *;
+
+.testimonial-card {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid rgba($text, 0.05);
+  cursor: default;
+
+  .quote-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .author-info {
+    margin-bottom: 1.5rem;
+
+    .name {
+      font-family: $font-heading;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: $text;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .position {
+      font-family: $font-body;
+      font-size: 0.9rem;
+      color: $text;
+      opacity: 0.5;
+      text-transform: capitalize;
+    }
+  }
+
+  .quote-text {
+    font-family: $font-body;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: $text;
+    opacity: 0.8;
+    margin: 0;
+    font-style: italic; // Adds that professional testimonial feel
+  }
+}

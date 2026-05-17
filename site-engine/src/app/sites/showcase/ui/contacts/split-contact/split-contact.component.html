@@ -1,0 +1,144 @@
+<section
+  class="split-contact"
+  *ngIf="siteData$ | async as data"
+  [class.with-basic-header]="data.header?.variant === 'basic'"
+  [class.with-floating-header]="data.header?.variant === 'floating-island'"
+>
+  <ng-container *ngIf="contactPage(data) as cp">
+    <div class="split-contact-shell">
+      <div class="split-container">
+        <h1 class="side-title">{{ cp.content?.sideTitle }}</h1>
+        <h2 class="form-title">{{ cp.content?.formTitle }}</h2>
+
+        <aside class="info-panel">
+          <div class="info-inner">
+            <p class="side-desc">{{ cp.content?.sideDescription }}</p>
+
+            <div
+              class="contact-methods"
+              *ngIf="data.identity?.brandContacts as bc"
+            >
+              <div class="method-item" *ngFor="let loc of bc.locations || []">
+                <span class="method-icon" *ngIf="bc.icons?.addressSvg" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path [attr.d]="bc.icons.addressSvg" />
+                  </svg>
+                </span>
+                <div class="text-wrap">
+                  <span class="method-text">{{ loc.address }}</span>
+                  <a
+                    *ngIf="hasMapsUrl(loc)"
+                    class="maps-link"
+                    [href]="loc.mapsUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Link to maps
+                    <svg
+                      class="arrow-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path d="M7 17L17 7M17 7H7M17 7V17" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="method-item" *ngFor="let phone of bc.phoneNumbers || []">
+                <span class="method-icon" *ngIf="bc.icons?.phoneSvg" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path [attr.d]="bc.icons.phoneSvg" />
+                  </svg>
+                </span>
+                <div class="text-wrap">
+                  <span class="method-text">{{ phone }}</span>
+                </div>
+              </div>
+
+              <div class="method-item" *ngFor="let email of bc.publicEmails || []">
+                <span class="method-icon" *ngIf="bc.icons?.emailSvg" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path [attr.d]="bc.icons.emailSvg" />
+                  </svg>
+                </span>
+                <div class="text-wrap">
+                  <a class="method-text link" [href]="'mailto:' + email">{{ email }}</a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="social-block"
+              *ngIf="validSocials(data.identity?.socials).length"
+            >
+              <div class="social-container">
+                <a
+                  *ngFor="let social of validSocials(data.identity?.socials)"
+                  [href]="social.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="social-link"
+                  [attr.aria-label]="social.platform || 'Social link'"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path [attr.d]="social.platformSvg" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="form-panel">
+          <form class="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+            <div class="field-group">
+              <label for="sc-name">Name</label>
+              <input
+                id="sc-name"
+                type="text"
+                name="name"
+                placeholder=""
+                autocomplete="name"
+                required
+                [(ngModel)]="formData.name"
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="sc-email">Email</label>
+              <input
+                id="sc-email"
+                type="email"
+                name="email"
+                placeholder=""
+                autocomplete="email"
+                required
+                [(ngModel)]="formData.email"
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="sc-message">Message</label>
+              <textarea
+                id="sc-message"
+                name="message"
+                rows="6"
+                placeholder=""
+                required
+                [(ngModel)]="formData.message"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="send-btn" [disabled]="!contactForm.form.valid">
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>

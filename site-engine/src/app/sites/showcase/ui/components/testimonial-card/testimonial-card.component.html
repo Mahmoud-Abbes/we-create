@@ -1,0 +1,19 @@
+<div class="testimonial-card" 
+     *ngIf="appearance"
+     [style.background-color]="appearance.cardBg"
+     [style.border-radius]="appearance.borderRadius || 'var(--borderRadius)'">
+  
+  <div class="quote-icon" [style.color]="appearance.iconColor">
+    <svg viewBox="0 0 1200 1200" fill="currentColor" aria-hidden="true">
+      <path d="M518.474,105.344C305.831,120.286,0.168,154.236,0,570.687v523.97h474.504v-560.61H316.946C306.965,384.354,430.23,345.701,564.274,316.03L518.474,105.344z M1154.198,105.344c-212.643,14.942-518.306,48.893-518.473,465.343v523.97h474.505v-560.61H952.672C942.689,384.354,1065.956,345.701,1200,316.03L1154.198,105.344L1154.198,105.344z"/>
+    </svg>
+  </div>
+
+  <div class="author-info">
+    <h4 class="name">{{ authorName }}</h4>
+    <span class="position" *ngIf="position">{{ position }}</span>
+  </div>
+
+  <p class="quote-text" *ngIf="testimonial">“{{ testimonial }}”</p>
+
+</div>

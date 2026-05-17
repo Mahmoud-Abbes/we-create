@@ -1,0 +1,56 @@
+<section class="testimonials-section" 
+         [style.background]="resolveBackground()"
+         *ngIf="content">
+  
+  <div class="container">
+    <div class="section-header" *ngIf="content.title">
+      <h2 class="title">{{ content.title }}</h2>
+    </div>
+
+    <div class="testimonials-viewport">
+      <div class="testimonials-track"
+           [class.is-transitioning]="isTransitioning"
+           [class.is-centered]="shouldCenterItems(content.items?.length || 0)"
+           [style.transform]="getTrackTransform(content.items?.length || 0)">
+        
+        <div class="testimonial-slide" *ngFor="let item of content.items">
+          <app-testimonial-card 
+            [authorName]="item.name"
+            [position]="item.position"
+            [testimonial]="item.testimonial"
+            [appearance]="content.cardAppearance">
+          </app-testimonial-card>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="pagination-controls" *ngIf="content.items?.length > visibleCards">
+      <button class="control-btn"
+              *ngIf="canGoPrev()"
+              [disabled]="isTransitioning"
+              [style.border-radius]="content.cardAppearance?.borderRadius || 'var(--borderRadius)'"
+              [style.color]="content.cardAppearance?.iconColor || 'var(--accent)'"
+              (click)="goPrev()"
+              aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      
+      <button class="control-btn"
+              *ngIf="canGoNext(content.items?.length || 0)"
+              [disabled]="isTransitioning"
+              [style.border-radius]="content.cardAppearance?.borderRadius || 'var(--borderRadius)'"
+              [style.color]="content.cardAppearance?.iconColor || 'var(--accent)'"
+              (click)="goNext(content.items?.length || 0)"
+              aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="grain-texture" *ngIf="content.appearance?.grainy"></div>
+</section>

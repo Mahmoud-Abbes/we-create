@@ -2,5 +2,11 @@ import { Routes } from '@angular/router';
 import { SiteRendererComponent } from './site-renderer/site-renderer.component';
 
 export const routes: Routes = [
-  { path: ':slug', component: SiteRendererComponent },
+  { path: ':slug', component: SiteRendererComponent,
+    children: [
+       { 
+         path: '', 
+         loadChildren: () => import('./sites/showcase/showcase.routes').then(m => m.SHOWCASE_ROUTES) 
+       }
+    ] },
 ];

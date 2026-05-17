@@ -1,0 +1,25 @@
+<section class="services-section" 
+         [style.background]="resolveBackground()"
+         *ngIf="content">
+  
+  <div class="container">
+    <div class="section-header" *ngIf="content.content">
+      <h2 class="title">{{ content.content.title }}</h2>
+      <p class="subtitle" *ngIf="content.content.description">
+        {{ content.content.description }}
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <app-service-card 
+        *ngFor="let item of content.items" 
+        [appearance]="content.appearance"
+        [svgIconData]="item.svgIconData"
+        [title]="item.title"
+        [description]="item.description">
+      </app-service-card>
+    </div>
+  </div>
+
+  <div class="grain-texture" *ngIf="content.appearance?.grainy && content.appearance?.colors?.color2"></div>
+</section>

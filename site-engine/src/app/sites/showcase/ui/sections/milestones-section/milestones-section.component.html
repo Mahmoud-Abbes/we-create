@@ -1,0 +1,24 @@
+<ng-container *ngIf="content">
+  <section #milestonesSection 
+           class="milestones-section" 
+           [style.background]="resolveBackground()">
+    
+    <div class="container milestones-container">
+      <div class="milestones-auto-grid">
+        <div class="milestone-item" *ngFor="let item of content.items; let i = index">
+          <div class="value-wrapper">
+            <span class="value">{{ displayValues[i] || item.value }}</span>
+            <span class="suffix" 
+                  *ngIf="item.suffix" 
+                  [style.color]="content.suffixColor || 'var(--accent)'">
+              {{ item.suffix }}
+            </span>
+          </div>
+          <p class="label">{{ item.label }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grain-texture" *ngIf="content.appearance?.grainy && content.appearance?.colors?.color2"></div>
+  </section>
+</ng-container>

@@ -1,4 +1,7 @@
-<div class="showcase-container">
-      <h2>Showcase Mode</h2>
-      <pre>{{ content | json }}</pre>
-    </div>
+<div class="showcase-engine-root">
+  <app-header-engine></app-header-engine>
+
+  <router-outlet></router-outlet>
+
+  <app-footer-engine></app-footer-engine>
+</div>

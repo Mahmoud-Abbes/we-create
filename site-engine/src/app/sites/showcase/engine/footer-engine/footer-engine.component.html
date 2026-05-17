@@ -1,0 +1,13 @@
+<ng-container *ngIf="siteData$ | async as data">
+  <app-footer-basic
+    *ngIf="data.footer?.variant === 'basic'" 
+    [data]="data">
+  </app-footer-basic>
+
+  <div
+    *ngIf="data.footer?.variant && data.footer?.variant !== 'basic'"
+    style="padding: 2.5rem; text-align: center; opacity: 0.6; font-size: 0.9rem;"
+  >
+    Footer Variant "{{ data.footer.variant }}" Not Supported
+  </div>
+</ng-container>

@@ -1,0 +1,46 @@
+@use '../../../styles/variables' as *;
+
+.service-card {
+  height: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid rgba($text, 0.08);
+  
+  // Force default cursor over the entire card and its text
+  cursor: default;
+
+  .icon-box {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 1.5rem;
+    pointer-events: none; // Icon shouldn't trigger cursor changes
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .card-content {
+    // Ensuring text doesn't trigger the text-selection (I-beam) cursor
+    cursor: default;
+
+    .card-title {
+      font-family: $font-heading;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: $text;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-description {
+      font-family: $font-body;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: $text;
+      opacity: 0.7;
+    }
+  }
+}

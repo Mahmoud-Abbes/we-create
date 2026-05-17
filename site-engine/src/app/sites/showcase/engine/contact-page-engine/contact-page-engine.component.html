@@ -1,0 +1,18 @@
+<ng-container *ngIf="siteData$ | async as data">
+  <div
+    class="engine-viewport"
+    [class.with-floating-header]="data.header?.variant === 'floating-island'"
+  >
+    <app-split-contact
+      *ngIf="data.pages?.contactPage?.variant === 'split'"
+    ></app-split-contact>
+
+    <div
+      *ngIf="!data.pages?.contactPage?.variant || data.pages?.contactPage?.variant !== 'split'"
+      class="fallback-container"
+    >
+      <div class="error-badge">Variant Not Found</div>
+      <p>Please check your JSON configuration for "contactPage.variant".</p>
+    </div>
+  </div>
+</ng-container>

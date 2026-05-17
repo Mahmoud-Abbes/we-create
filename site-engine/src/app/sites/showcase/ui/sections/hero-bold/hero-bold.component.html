@@ -1,0 +1,41 @@
+<section class="hero-wrapper" 
+         [style.background]="getBackground()"
+         *ngIf="content">
+
+  <div class="grain-texture" *ngIf="shouldShowGrain()"></div>
+
+  <div class="background-layer" *ngIf="content.layoutType === 'images-background'">
+    <div *ngFor="let img of content.images; let i = index" 
+         class="bg-slide" 
+         [class.active]="i === currentSlide"
+         [style.backgroundImage]="'url(' + img + ')'">
+    </div>
+  </div>
+
+  <div class="container hero-grid" 
+       [ngClass]="content.layoutType"
+       [class.force-center]="content.layoutType === 'images-right' && (!content.images || content.images.length === 0)">
+    
+    <div class="text-side" *ngIf="identity$ | async as id">
+      <h1>{{ id.companyName }}</h1>
+      <p>{{ id.slogan }}</p>
+
+      <div class="cta" *ngIf="content.showViewMore">
+        <button *ngIf="content.viewMoreType === 'button'" (click)="scrollToNextSection()">
+          View More
+        </button>
+        
+        <button *ngIf="content.viewMoreType === 'arrow'" class="arrow-btn" (click)="scrollToNextSection()">
+          <span class="bouncing-arrow"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="image-side" *ngIf="content.layoutType === 'images-right' && content.images?.length > 0">
+      <img *ngFor="let img of content.images; let i = index" 
+           [src]="img" 
+           [class.active]="i === currentSlide">
+    </div>
+
+  </div>
+</section>

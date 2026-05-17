@@ -1,0 +1,95 @@
+@use '../../../styles/variables' as *;
+
+.basic-nav-bar {
+  width: 100%;
+  background-color: $surface;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.header-container {
+  width: 100%;
+  max-width: $container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+}
+
+.brand-side {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .favicon-img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .company-name {
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: $primary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+
+  a {
+    text-decoration: none;
+    font-family: $font-body;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text;
+    transition: color 0.3s ease, opacity 0.3s ease;
+
+    &:hover {
+      color: $primary;
+      opacity: 0.8;
+    }
+
+    // Pure color change for the active state
+    &.active-link {
+      color: $primary;
+      opacity: 1;
+      font-weight: 700; // Slight weight bump to make it "pop" without shifting layout
+    }
+  }
+}
+
+// --- RESPONSIVE ---
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0.8rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .company-name {
+    font-size: 1rem;
+  }
+
+  .nav-links {
+    gap: 1.2rem;
+
+    a {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+
+  // Ultra-collapse for tiny devices
+  .company-name {
+    display: none; // Only show favicon to prevent overlap
+  }
+}
