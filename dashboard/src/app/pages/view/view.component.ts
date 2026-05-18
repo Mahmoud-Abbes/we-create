@@ -19,15 +19,16 @@ export class ViewComponent implements OnInit {
     private route: ActivatedRoute,
     private tokenService: PreviewTokenService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Correctly extracting the slug from the URL parameters
-    this.projectSlug = this.route.snapshot.paramMap.get('slug') ?? '';
-    
-    if (this.projectSlug) {
-      this.loadPreview();
-    }
+    // Subscribe to paramMap to detect slug changes dynamically on router reuse
+    this.route.paramMap.subscribe(params => {
+      this.projectSlug = params.get('slug') ?? '';
+      if (this.projectSlug) {
+        this.loadPreview();
+      }
+    });
   }
 
   loadPreview(): void {
@@ -36,7 +37,7 @@ export class ViewComponent implements OnInit {
     this.tokenService.getBurnerToken(this.projectSlug).subscribe({
       next: (res: any) => {
         // Constructing the engine URL with the one-time token and origin
-        const rawUrl = `http://localhost:4100/${this.projectSlug}?previewToken=${res.previewToken}&origin=dashboard`;
+        const rawUrl = `${window.location.origin}/${this.projectSlug}?previewToken=${res.previewToken}&origin=dashboard`;
         this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);
       },
       error: (err) => {

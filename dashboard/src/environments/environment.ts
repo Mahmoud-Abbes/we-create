@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.wecreate.com' // Your future production URL
+  apiUrl: 'http://localhost/api',
+  keycloakUrl: 'http://localhost/auth'
 };

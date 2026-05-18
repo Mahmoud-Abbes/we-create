@@ -8,7 +8,7 @@ export const authRoutesGuard: CanActivateFn = (route, state) => {
   const authService = inject(KeycloakService);
   const router = inject(Router);
 
-  // 1. If not even authenticated in Keycloak, go to Landing
+  // 1. If not even authenticated in Keycloak, go to Landing (home page)
   if (!authService.isAuthenticated) {
     return router.parseUrl('/');
   }
@@ -20,3 +20,5 @@ export const authRoutesGuard: CanActivateFn = (route, state) => {
 
   return true;
 };
+
+
