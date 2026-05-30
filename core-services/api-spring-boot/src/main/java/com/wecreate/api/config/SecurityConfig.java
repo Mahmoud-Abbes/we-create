@@ -26,7 +26,7 @@ public class SecurityConfig {
             .cors(withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/public/**", "/api/public/**", "/error").permitAll()
+                .requestMatchers("/public/**", "/api/public/**", "/error", "/payments/checkout", "/payments/webhook").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));

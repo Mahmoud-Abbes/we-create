@@ -20,9 +20,14 @@ public class UserService {
 
         // If user doesn't exist in our DB, create them
         if (!userRepository.existsById(keycloakId)) {
+            String preferredUsername = jwt.getClaimAsString("preferred_username");
+            if (preferredUsername != null && preferredUsername.contains("@")) {
+                preferredUsername = preferredUsername.substring(0, preferredUsername.indexOf("@"));
+            }
+
             User newUser = User.builder()
                     .id(keycloakId)
-                    .username(jwt.getClaimAsString("preferred_username"))
+                    .username(preferredUsername)
                     .email(jwt.getClaimAsString("email"))
                     .fullName(jwt.getClaimAsString("name")) // Standard OIDC claim for Full Name
                     .build();

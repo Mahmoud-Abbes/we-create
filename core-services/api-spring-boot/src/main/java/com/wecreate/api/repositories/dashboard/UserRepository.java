@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    // Spring Data JPA handles the CRUD (Save, Delete, Find) automatically
+    boolean existsByUsername(String username);
+
+    boolean existsByUsernameAndIdNot(String username, String id);
 }

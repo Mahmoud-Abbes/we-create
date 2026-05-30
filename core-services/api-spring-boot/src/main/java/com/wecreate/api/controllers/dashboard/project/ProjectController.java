@@ -1,5 +1,6 @@
 package com.wecreate.api.controllers.dashboard.project;
 
+import com.wecreate.api.models.dashboard.UserProject;
 import com.wecreate.api.shared.dtos.dashboard.ProjectSidebarDTO;
 import com.wecreate.api.repositories.dashboard.UserProjectRepository;
 import com.wecreate.api.services.engine.TokenService;
@@ -13,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,11 +28,9 @@ public class ProjectController {
 
     @GetMapping("/sidebar")
     public ResponseEntity<List<ProjectSidebarDTO>> getSidebarProjects(@AuthenticationPrincipal Jwt jwt) {
-        String userId = jwt.getSubject();
-        List<ProjectSidebarDTO> projects = userProjectRepository.findAll().stream()
-                .filter(up -> up.getUserId().equals(userId))
-                .map(up -> new ProjectSidebarDTO(
-                        up.getProject().getSlug()))
+        UUID userId = UUID.fromString(jwt.getSubject());
+        List<ProjectSidebarDTO> projects = userProjectRepository.findByUserId(userId).stream()
+                .map(up -> new ProjectSidebarDTO(up.getProject().getSlug()))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(projects);
@@ -40,17 +41,31 @@ public class ProjectController {
             @PathVariable String identifier,
             @AuthenticationPrincipal Jwt jwt
     ) {
-        String userId = jwt.getSubject();
+        UUID userId = UUID.fromString(jwt.getSubject());
 
-        // 1. Try to find by Slug, fallback to ID if it's a UUID
-        com.wecreate.api.models.dashboard.UserProject up = userProjectRepository.findByUserIdAndProject_Slug(userId, identifier)
-                .or(() -> userProjectRepository.findByUserIdAndProject_Id(userId, identifier))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied or project not found: " + identifier));
+        UserProject up = resolveUserProject(userId, identifier)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.FORBIDDEN,
+                        "Access denied or project not found: " + identifier
+                ));
 
-        // 2. Generate the one-time burner token using the ACTUAL slug
         String actualSlug = up.getProject().getSlug();
         String token = tokenService.generateToken(actualSlug);
 
         return ResponseEntity.ok(Map.of("previewToken", token));
+    }
+
+    private Optional<UserProject> resolveUserProject(UUID userId, String identifier) {
+        Optional<UserProject> bySlug = userProjectRepository.findByUserIdAndProject_Slug(userId, identifier);
+        if (bySlug.isPresent()) {
+            return bySlug;
+        }
+
+        try {
+            UUID projectId = UUID.fromString(identifier);
+            return userProjectRepository.findByUserIdAndProject_Id(userId, projectId);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 }

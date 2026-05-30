@@ -40,7 +40,7 @@ public class ProjectCreator {
             currentProjectId = newProject.getId();
 
             if (userId != null && !userId.isBlank()) {
-                persistenceUtil.createUserProjectLink(userId, newProject, "OWNER");
+                persistenceUtil.createUserProjectLink(UUID.fromString(userId), newProject, "OWNER");
             }
 
             // 3. External Service: Firebase Upload & JSON Refactor

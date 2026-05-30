@@ -7,7 +7,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 public class CorsConfig {
@@ -15,11 +14,15 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // RULE #5 (CORS Security): Explicitly allow your frontend origin
+
+        // Updated to explicitly allow the bare localhost domain along with port wildcards
         configuration.setAllowedOriginPatterns(Arrays.asList(
+                "http://localhost",
                 "http://localhost:*",
+                "http://127.0.0.1",
                 "http://127.0.0.1:*"
         ));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

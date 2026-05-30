@@ -32,7 +32,7 @@ public class ProjectPersistenceUtil {
         });
     }
 
-    public void createUserProjectLink(String userId, Project project, String role) {
+    public void createUserProjectLink(UUID userId, Project project, String role) {
         UserProject link = new UserProject();
         link.setUserId(userId);
         link.setProject(project);

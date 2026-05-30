@@ -1,10 +1,6 @@
 spring:
   config:
     import: "optional:file:../../../.env[.properties]"
-server:
-  error:
-    include-message: always
-    include-exception: always
   application:
     name: api-spring-boot
   datasource:
@@ -21,6 +17,26 @@ server:
         jwt:
           issuer-uri: http://localhost/auth/realms/we-create
           jwk-set-uri: http://keycloak:8080/auth/realms/we-create/protocol/openid-connect/certs
+
+server:
+  error:
+    include-message: always
+    include-exception: always
+
+stripe:
+  secret:
+    key: ${STRIPE_SECRET_KEY}
+  webhook:
+    secret: ${STRIPE_WEBHOOK_SECRET}
+
+keycloak:
+  realm: ${KEYCLOAK_REALM:we-create}
+  admin:
+    server-url: ${KEYCLOAK_ADMIN_SERVER_URL:http://keycloak:8080/auth}
+    realm: ${KEYCLOAK_ADMIN_REALM:master}
+    client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:admin-cli}
+    username: ${KEYCLOAK_ADMIN_USERNAME:admin}
+    password: ${KEYCLOAK_ADMIN_PASSWORD:admin}
 
 # Custom Supabase Properties
 supabase:
