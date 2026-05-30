@@ -97,7 +97,16 @@ export class KeycloakService {
     return this.keycloak?.token;
   }
 
+  private localFullName = '';
+  private localUsername = '';
+
+  setLocalProfile(username: string, fullName: string) {
+    this.localUsername = username;
+    this.localFullName = fullName;
+  }
+
   getUserFullName(): string {
+    if (this.localFullName) return this.localFullName;
     const tokenParsed = this.keycloak?.tokenParsed as any;
     if (!tokenParsed) return 'Unknown User';
     const first = tokenParsed.given_name || '';
@@ -106,7 +115,41 @@ export class KeycloakService {
   }
 
   getUsername(): string {
+    if (this.localUsername) return this.localUsername;
     const tokenParsed = this.keycloak?.tokenParsed as any;
-    return tokenParsed?.preferred_username || 'anonymous';
+    let username = tokenParsed?.preferred_username || '';
+    if (username.includes('@')) {
+      username = username.substring(0, username.indexOf('@'));
+    }
+    return username || 'anonymous';
+  }
+
+  getEmail(): string {
+    const tokenParsed = this.keycloak?.tokenParsed as any;
+    return tokenParsed?.email || '';
+  }
+
+  /** True only when the user signed in via a Google identity provider (not gmail address alone). */
+  isGoogleUser(): boolean {
+    const tokenParsed = this.keycloak?.tokenParsed as Record<string, unknown> | undefined;
+    if (!tokenParsed) return false;
+
+    const idp = tokenParsed['identity_provider'] ?? tokenParsed['idp'] ?? tokenParsed['idp_alias'];
+    if (typeof idp === 'string' && idp.toLowerCase().includes('google')) {
+      return true;
+    }
+
+    return false;
+  }
+
+  async updatePassword(redirectPath = '/account-settings'): Promise<void> {
+    if (!this.keycloak) {
+      throw new Error('Keycloak is not initialized');
+    }
+
+    await this.keycloak.login({
+      action: 'UPDATE_PASSWORD',
+      redirectUri: `${window.location.origin}${redirectPath}`,
+    });
   }
 }

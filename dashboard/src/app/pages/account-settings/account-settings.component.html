@@ -1,0 +1,69 @@
+<div class="settings-page">
+  <div class="settings-card">
+    <h2 class="view-title">Account settings</h2>
+    <div class="header-line"></div>
+
+    <form class="settings-form">
+      <div class="form-group full-width">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" [value]="userEmail" disabled />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            [(ngModel)]="username"
+            [disabled]="savingUsername" />
+        </div>
+        <button
+          type="button"
+          class="action-btn"
+          (click)="onUpdateUsername()"
+          [disabled]="savingUsername">
+          {{ savingUsername ? 'Saving…' : 'Change username' }}
+        </button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            [(ngModel)]="fullName"
+            [disabled]="savingFullName" />
+        </div>
+        <button
+          type="button"
+          class="action-btn"
+          (click)="onUpdateFullName()"
+          [disabled]="savingFullName">
+          {{ savingFullName ? 'Saving…' : 'Change full name' }}
+        </button>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <ng-container *ngIf="!isGoogleUser; else googleUserTemplate">
+        <p class="password-prompt">
+          Want to reset your password?
+          <a href="#" (click)="onResetPassword($event)" class="reset-link">Reset password</a>
+        </p>
+      </ng-container>
+
+      <ng-template #googleUserTemplate>
+        <p class="google-email-info">
+          Account synced with the email address
+          <span class="special-email">{{ userEmail }}</span>
+        </p>
+      </ng-template>
+
+      <button type="button" class="logout-btn" (click)="onLogout()">Log out</button>
+    </form>
+  </div>
+</div>

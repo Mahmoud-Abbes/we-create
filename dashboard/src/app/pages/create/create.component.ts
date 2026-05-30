@@ -40,7 +40,9 @@ export class CreateComponent implements AfterViewInit, OnDestroy {
   thumbHeight = 96;
   thumbTop = 0;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    
+  }
 
   currentStep = 1;
   selectedType: 'showcase' | 'ecommerce' | null = null;

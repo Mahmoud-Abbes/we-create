@@ -1,0 +1,132 @@
+.payment-view {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1020px;
+  padding: 0 24px;
+
+  .view-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0 0 28px 12px;
+    letter-spacing: -0.5px;
+  }
+
+  .pricing-grid {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .pricing-card {
+    background: transparent;
+    border: 1.5px solid #4a4a4a;
+    border-radius: 20px;
+    width: 310px;
+    padding: 32px 24px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &.featured {
+      border: 3.5px solid #888888;
+    }
+
+    .card-header {
+      display: flex;
+      flex-direction: column;
+      min-height: 120px;
+
+      .plan-name {
+        color: #9eb7d9;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 12px 0;
+
+        &.highlight {
+          width: fit-content;
+          color: transparent;
+          background-image: linear-gradient(
+            90deg,
+            #3286fb 0%,
+            #6b9ae8 20%,
+            #9498d4 42%,
+            #b896c4 58%,
+            #d08888 80%,
+            #e07a7a 100%
+          );
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      }
+
+      .plan-price {
+        font-size: 22px;
+        font-weight: 500;
+        color: #ffffff;
+        margin: 0;
+
+        .price-desc {
+          font-size: 16px;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 0.65);
+        }
+      }
+
+      .badge {
+        color: #b3b3b3;
+        font-size: 14px;
+        font-weight: 400;
+        margin-top: 8px;
+      }
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(217, 217, 217, 0.08);
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    .plan-btn {
+      width: 100%;
+      height: 44px;
+      background-color: #5575b3;
+      border: none;
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+
+      &:hover:not(:disabled) {
+        background-color: #6585c4;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+@media (max-width: 950px) {
+  .payment-view {
+    .view-title {
+      align-self: center;
+      margin-left: 0;
+    }
+    .pricing-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

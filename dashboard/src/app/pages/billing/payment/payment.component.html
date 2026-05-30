@@ -1,0 +1,37 @@
+<div class="payment-view">
+  <!-- Left-aligned, smaller, prettier header title matching image_bdc6a3.png -->
+  <h2 class="view-title">Choose your plan</h2>
+
+  <div class="pricing-grid">
+    <!-- Card 1: One Month -->
+    <div class="pricing-card">
+      <div class="card-header">
+        <h3 class="plan-name">One Month</h3>
+        <p class="plan-price">$10 <span class="price-desc">lasts one month</span></p>
+      </div>
+      <div class="divider"></div>
+      <button class="plan-btn" [disabled]="isLoading || !projectId" (click)="selectPlan('ONE_MONTH')">Add period</button>
+    </div>
+
+    <!-- Card 2: Subscription (Featured Center Card matching image_bdc6a3.png) -->
+    <div class="pricing-card featured">
+      <div class="card-header">
+        <h3 class="plan-name highlight">Subscription</h3>
+        <p class="plan-price">$5 <span class="price-desc">/ billed monthly</span></p>
+        <span class="badge">Cancel anytime</span>
+      </div>
+      <div class="divider"></div>
+      <button class="plan-btn active" [disabled]="isLoading || !projectId" (click)="selectPlan('SUBSCRIPTION')">Get Started</button>
+    </div>
+
+    <!-- Card 3: Three Months -->
+    <div class="pricing-card">
+      <div class="card-header">
+        <h3 class="plan-name">Three Months</h3>
+        <p class="plan-price">$20 <span class="price-desc">lasts three months</span></p>
+      </div>
+      <div class="divider"></div>
+      <button class="plan-btn" [disabled]="isLoading || !projectId" (click)="selectPlan('THREE_MONTHS')">Add period</button>
+    </div>
+  </div>
+</div>

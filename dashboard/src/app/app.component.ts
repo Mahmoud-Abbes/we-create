@@ -4,12 +4,14 @@ import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { KeycloakService } from './services/auth/keycloak.service';
 import { SyncService } from './services/auth/sync.service';
 import { SidebarComponent } from './shared/ui/sidebar/sidebar.component';
+import { ConfirmDialogComponent } from './shared/ui/confirm-dialog/confirm-dialog.component';
 import { filter, Subscription } from 'rxjs';
+import { NgxSonnerToaster } from 'ngx-sonner';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, AsyncPipe, SidebarComponent],
+  imports: [RouterOutlet, CommonModule, AsyncPipe, SidebarComponent, NgxSonnerToaster, ConfirmDialogComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

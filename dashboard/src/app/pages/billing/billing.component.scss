@@ -1,0 +1,77 @@
+.billing-container {
+  min-height: 100vh;
+  background-color: #363636;
+  color: #ffffff;
+  font-family: 'Google Sans', 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+
+  .tabs-header {
+    display: flex;
+    gap: 40px;
+    padding-bottom: 16px;
+    width: 100%;
+    max-width: 520px; // Gives the line proper width beneath both tabs
+    justify-content: center;
+    margin-bottom: 60px;
+    position: relative;
+
+    // Fixed underline color and scaling footprint
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%; // Spans across the entire defined tab region wrapper width
+      height: 1px; // Crisp, precise single-pixel line depth tracking
+      background-color: #676767; // Updated color target
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 400;
+      cursor: pointer;
+      padding: 4px 0;
+      opacity: 0.45;
+      transition: opacity 0.2s ease;
+      z-index: 2; // Ensures text links sit clearly above the underline block
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &.active {
+        opacity: 1;
+      }
+
+      &:disabled {
+        opacity: 0.35;
+        pointer-events: none;
+      }
+    }
+
+    .tab-wrap {
+      display: inline-block;
+
+      &--disabled {
+        cursor: not-allowed;
+      }
+
+      &--disabled button:disabled {
+        opacity: 0.35;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .tabs-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}

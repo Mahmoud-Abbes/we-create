@@ -6,11 +6,17 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import {
+  markDashboardAssetCookie,
+  rejectMissingStaticAsset,
+} from './ssr-middleware';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
+app.use(markDashboardAssetCookie);
 
 /**
  * Example Express Rest API endpoints can be defined here.
@@ -34,6 +40,8 @@ app.use(
     redirect: false,
   }),
 );
+
+app.use(rejectMissingStaticAsset);
 
 /**
  * Handle all other requests by rendering the Angular application.

@@ -1,35 +1,115 @@
-<div class="view-container">
+<div *ngIf="bootstrapping" class="view-bootstrapping">
+  <div class="spinner"></div>
+  <p>Loading project…</p>
+</div>
+
+<div class="view-container" *ngIf="accessGranted">
   <header class="preview-header">
     <div class="project-info">
-      <span class="engine-tag">WeCreate Engine</span>
       <h1 class="project-slug-title">{{ projectSlug }}</h1>
+      <div class="status-row">
+        <span class="status-label">Subscription</span>
+        <span class="status-badge" [ngClass]="'status-' + subscriptionStatus.toLowerCase()">
+          {{ subscriptionStatus === 'PAST_DUE' ? 'PAST DUE' : subscriptionStatus }}
+        </span>
+        <ng-container *ngIf="subscriptionStatus !== 'TRIAL' && planDateLabel">
+          <span class="dot">·</span>
+          <span class="plan-date-text" [innerHTML]="planDateLabel"></span>
+        </ng-container>
+      </div>
+
+      <p *ngIf="showExpiredHint" class="site-hint-block site-hint-text">
+        Your period has expired pay to get your site back online!
+      </p>
+
+      <div *ngIf="showAccessHint" class="site-hint-block">
+        <p class="site-hint-text">You can access your website on the internet!</p>
+        <a
+          class="site-hint-link"
+          [href]="getLiveUrl()"
+          target="_blank"
+          rel="noopener noreferrer">
+          Open in new tab
+        </a>
+      </div>
     </div>
-    
+
     <div class="preview-controls">
-      <!-- FIXED: Removed 'Fried' typo from (click) -->
-      <button class="btn-refresh" (click)="loadPreview()" [disabled]="!safeUrl">
-        <svg class="refresh-icon" [class.spinning]="!safeUrl" viewBox="0 0 24 24">
-          <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+      <button *ngIf="isOwner" class="btn-update-sub" (click)="goToPayment()">
+        <svg *ngIf="subscriptionStatus !== 'TRIAL'" class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+          <line x1="1" y1="10" x2="23" y2="10"/>
         </svg>
-        <span>Refresh Preview</span>
+        {{ subscriptionStatus === 'TRIAL' ? 'Deploy your site' : 'Manage your subscription' }}
       </button>
+
+      <div class="collab-wrapper" #collabWrapper>
+        <button class="btn-ghost" [class.open]="collaboratorsOpen" (click)="collaboratorsOpen = !collaboratorsOpen">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+          Collaborators
+          <svg class="chevron-icon" [class.flipped]="collaboratorsOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+
+        <div class="collab-dropdown" [class.visible]="collaboratorsOpen">
+          <div class="collab-dropdown-header">Team · {{ collaborators.length }} members</div>
+          <div class="collab-item" *ngFor="let member of collaborators">
+            <div class="collab-avatar" [class.avatar-owner]="member.role === 'OWNER'">
+              {{ getInitials(member.username) }}
+            </div>
+            <span class="collab-username">{{ member.username }}</span>
+            <span class="collab-role" [class.role-owner]="member.role === 'OWNER'" [class.role-collab]="member.role === 'COLLABORATOR'">
+              {{ member.role === 'OWNER' ? 'Owner' : 'Collaborator' }}
+            </span>
+          </div>
+          <div *ngIf="collaborators.length === 0" class="collab-empty">No collaborators yet.</div>
+
+          <div *ngIf="isOwner" class="collab-copy-link-wrap">
+            <button
+              type="button"
+              class="btn-copy-link"
+              [disabled]="copyLinkLoading"
+              (click)="copyCollaboratorLink()">
+              <span class="btn-copy-link-content" *ngIf="!copyLinkLoading">
+                <svg class="btn-copy-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                </svg>
+                Copy Link
+              </span>
+              <span class="btn-copy-link-spinner" *ngIf="copyLinkLoading" aria-label="Generating link"></span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
   <div class="browser-frame">
-    <!-- Loader logic -->
     <div *ngIf="!safeUrl" class="engine-loader">
       <div class="spinner"></div>
       <p>Negotiating Burner Token...</p>
     </div>
-    
-    <!-- Iframe Wrapper to avoid structural directive conflicts -->
+
     <div class="iframe-wrapper" *ngIf="safeUrl">
-      <iframe 
-        [src]="safeUrl" 
-        class="preview-iframe"
-        frameborder="0">
-      </iframe>
+      <iframe [src]="safeUrl" class="preview-iframe" frameborder="0"></iframe>
     </div>
+
+    <!-- Floating refresh button — bottom-right of iframe -->
+    <button
+      class="btn-refresh-fab"
+      (click)="loadPreview()"
+      [disabled]="!safeUrl"
+      title="Refresh preview"
+      aria-label="Refresh preview">
+      <svg [class.spinning]="!safeUrl" viewBox="0 0 24 24">
+        <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+      </svg>
+    </button>
   </div>
 </div>

@@ -1,0 +1,32 @@
+@if (state$ | async; as state) {
+  @if (state.visible && state.options) {
+    <div
+      class="confirm-backdrop"
+      role="presentation"
+      (click)="onBackdropClick()"
+      aria-hidden="false">
+      <div
+        class="confirm-dialog"
+        role="alertdialog"
+        [attr.aria-labelledby]="'confirm-title'"
+        [attr.aria-describedby]="'confirm-message'"
+        (click)="onDialogClick($event)">
+        <h2 id="confirm-title" class="confirm-title">{{ state.options.title }}</h2>
+        <p id="confirm-message" class="confirm-message">{{ state.options.message }}</p>
+        <div class="confirm-actions">
+          <button type="button" class="btn btn-cancel" (click)="confirmService.dismiss()">
+            {{ state.options.cancelLabel || 'Cancel' }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-confirm"
+            [class.variant-danger]="state.options.variant === 'danger'"
+            [class.variant-primary]="state.options.variant === 'primary'"
+            (click)="confirmService.accept()">
+            {{ state.options.confirmLabel || 'Confirm' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+}

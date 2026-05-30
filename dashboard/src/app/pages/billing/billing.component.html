@@ -1,0 +1,29 @@
+<div class="billing-container">
+  <!-- Dynamic Tab Navigation Header -->
+  <div class="tabs-header">
+    <button 
+      [class.active]="activeTab === 'payment'" 
+      (click)="switchTab('payment')">
+      Payment
+    </button>
+    <span class="tab-wrap" [class.tab-wrap--disabled]="isSubscriptionTabDisabled">
+      <button
+        type="button"
+        [class.active]="activeTab === 'subscription'"
+        [disabled]="isSubscriptionTabDisabled"
+        [attr.aria-disabled]="isSubscriptionTabDisabled"
+        (click)="switchTab('subscription')">
+        Subscription & deployment
+      </button>
+    </span>
+  </div>
+
+  <!-- Dynamic Component Switch Area -->
+  <div class="tabs-content">
+    @if (activeTab === 'payment') {
+      <app-payment [slug]="projectSlug"></app-payment>
+    } @else if (!isTrial) {
+      <app-subscription-management [slug]="projectSlug"></app-subscription-management>
+    }
+  </div>
+</div>

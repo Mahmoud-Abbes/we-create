@@ -60,6 +60,6 @@
       <span class="sidebar-user-name">{{ authService.getUserFullName() }}</span>
       <span class="sidebar-user-handle">@{{ getFormattedUsername() }}</span>
     </div>
-    <img src="/images/settings.svg" class="sidebar-user-settings icon-filter" alt="Settings" />
+    <img src="/images/settings.svg" class="sidebar-user-settings icon-filter" alt="Settings" (click)="navigateToSettongs()" />
   </div>
 </aside>

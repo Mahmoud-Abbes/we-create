@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { KeycloakService } from '../../services/auth/keycloak.service';
-import { ToastrService } from 'ngx-toastr';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-landing',
@@ -11,7 +11,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LandingComponent {
   private authService = inject(KeycloakService);
-  private toastr = inject(ToastrService);
 
   // Auth.1. OCID : Asking for user identification.
 
@@ -26,7 +25,7 @@ export class LandingComponent {
       await this.authService.login('/welcome');
     } catch (error) {
       console.error('Login flow failed:', error);
-      this.toastr.error('Authentication failed. Please try again.', 'Sign-in failed');
+      toast.error('Authentication failed. Please try again.');
     }
   }
 }

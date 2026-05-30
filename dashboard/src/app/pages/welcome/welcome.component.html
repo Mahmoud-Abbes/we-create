@@ -1,5 +1,5 @@
 <div class="welcome-container">
-  <main class="welcome-main">
+  <main class="welcome-main" [class.no-border]="status === 'auth_failed' || status === 'sync_failed'">
     <div class="welcome-content">
       
       <!-- 1. LOADING STATE -->

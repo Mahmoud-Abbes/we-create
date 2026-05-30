@@ -1,0 +1,169 @@
+<div class="management-view">
+  <div *ngIf="loading" class="state-msg">Loading…</div>
+
+  <div *ngIf="loadError" class="state-msg error">
+    Could not load billing details.
+
+    <button type="button" class="link-btn" (click)="loadData()">Try again</button>
+  </div>
+
+  <ng-container *ngIf="!loading && !loadError">
+    <div class="panels">
+      <section class="panel">
+        <div class="panel-head">
+          <h3>Subscription</h3>
+
+          <span
+            class="status-pill"
+            [class.is-active]="subscriptionStatus === 'ACTIVE'"
+            [class.is-canceled]="subscriptionStatus === 'CANCELED'"
+          >
+            {{ subscriptionStatus || '—' }}
+          </span>
+        </div>
+
+        <dl class="meta-list">
+          <div class="meta-row">
+            <dt>Plan</dt>
+
+            <dd>{{ formatBillingPlan(billingPlan) }}</dd>
+          </div>
+
+          <div class="meta-row">
+            <dt>Period ends</dt>
+
+            <dd>{{ formatDate(periodEndAt) }}</dd>
+          </div>
+        </dl>
+
+        <button
+          *ngIf="canCancelSubscription"
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="onCancelSubscription()"
+          [disabled]="cancellingSubscription"
+        >
+          {{ cancellingSubscription ? 'Cancelling…' : 'Cancel subscription' }}
+        </button>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h3>Deployment</h3>
+
+          <span class="status-pill" [class.is-live]="deployable" [class.is-offline]="!deployable">
+            {{ deployable ? 'Live' : 'Offline' }}
+          </span>
+        </div>
+
+        <dl class="meta-list">
+          <div class="meta-row">
+            <dt>Project</dt>
+
+            <dd class="mono">{{ slug }}</dd>
+          </div>
+        </dl>
+
+        <div *ngIf="canShowLiveSiteAccess" class="access-banner access-banner--live">
+          <p class="access-banner__text">You can access your website on the internet!</p>
+
+          <a
+            class="access-banner__link"
+            [href]="liveSiteUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open in new tab
+
+            <span class="access-banner__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div *ngIf="canShowRedeployHint" class="access-banner access-banner--warning">
+          <p class="access-banner__text">
+            You need to deploy your site again to access it via the internet!
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn"
+          [class.btn-deploy]="!deployable"
+          [class.btn-outline-danger]="deployable"
+          (click)="onToggleDeployment()"
+          [disabled]="togglingDeployment"
+        >
+          {{
+            togglingDeployment
+              ? deployable
+                ? 'Undeploying…'
+                : 'Deploying…'
+              : deployable
+                ? 'Undeploy site'
+                : 'Deploy site'
+          }}
+        </button>
+      </section>
+    </div>
+
+    <section class="panel invoices-panel">
+      <div class="panel-head">
+        <h3>Invoices</h3>
+      </div>
+
+      <p class="panel-note">Download Stripe invoice PDFs for this project.</p>
+
+      <p *ngIf="invoices.length === 0" class="state-msg inline">No invoices yet.</p>
+
+      <div class="table-wrap" *ngIf="invoices.length > 0">
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>Amount</th>
+
+              <th>Currency</th>
+
+              <th>Status</th>
+
+              <th>Paid at</th>
+
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let invoice of invoices">
+              <td>{{ formatAmount(invoice.amount, invoice.currency) }}</td>
+
+              <td>{{ invoice.currency | uppercase }}</td>
+
+              <td>
+                <span class="row-status" [ngClass]="invoice.status.toLowerCase()">
+                  {{ invoice.status }}
+                </span>
+              </td>
+
+              <td>{{ formatDate(invoice.paidAt) }}</td>
+
+              <td class="col-actions">
+                <a
+                  *ngIf="invoice.hostedPdfUrl; else pdfPending"
+                  class="pdf-link"
+                  [href]="invoice.hostedPdfUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download PDF
+                </a>
+
+                <ng-template #pdfPending>
+                  <span class="pdf-pending">Processing…</span>
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </ng-container>
+</div>

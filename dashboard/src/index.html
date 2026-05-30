@@ -21,6 +21,11 @@
     connect-src 'self' http://localhost http://localhost:4100;" />
 
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <script>
+    if (window.self !== window.top) {
+      window.top.location.href = window.self.location.href;
+    }
+  </script>
 </head>
 
 <body>
